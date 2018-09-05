@@ -1,0 +1,84 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: µVision V5.24.2.0
+Copyright (C) 2017 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: Electrical Engineering, North Dakota State University, LIC=----
+ 
+Tool Versions:
+Toolchain:       MDK-Lite  Version: 5.24.1
+Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 5 (build 528)
+Assembler:       Armasm.exe V5.06 update 5 (build 528)
+Linker/Locator:  ArmLink.exe V5.06 update 5 (build 528)
+Library Manager: ArmAr.exe V5.06 update 5 (build 528)
+Hex Converter:   FromElf.exe V5.06 update 5 (build 528)
+CPU DLL:         SARMCM3.DLL V5.24.1
+Dialog DLL:      DCM.DLL V1.16.0.0
+Target DLL:      Segger\JL2CM3.dll V2.99.26.0
+Dialog DLL:      TCM.DLL V1.32.0.0
+ 
+<h2>Project:</h2>
+C:\Users\benjamin.gerber\Documents\K22_Project_Framework\K22_Project_Framework.uvprojx
+Project File Date:  09/04/2018
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 5 (build 528)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
+Build target 'Target 1'
+assembling startup_MK22F51212.s...
+compiling ADC.c...
+compiling DAC.c...
+compiling system_MK22F51212.c...
+compiling TimerInt.c...
+compiling MCG.c...
+compiling main.c...
+linking...
+.\K22_Project_Framework.axf: Warning: L6914W: option ro-base ignored when using --scatter.
+.\K22_Project_Framework.axf: Warning: L6914W: option rw-base ignored when using --scatter.
+.\K22_Project_Framework.axf: Warning: L6340W: options first and last are ignored for link type of scattered
+Program Size: Code=1656 RO-data=1056 RW-data=8 ZI-data=2048  
+Finished: 0 information, 3 warning and 0 error messages.
+".\K22_Project_Framework.axf" - 0 Error(s), 3 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.5.4.0.pack
+                ARM.CMSIS.5.4.0
+                CMSIS (Cortex Microcontroller Software Interface Standard)
+   * Component: DSP Version: 1.5.2
+   * Component: CORE Version: 5.1.2
+
+Package Vendor: NXP
+                http://mcuxpresso.nxp.com/cmsis_pack/repo/NXP.MK22F51212_DFP.10.0.3.pack
+                NXP.MK22F51212_DFP.10.0.3
+                Device Family Pack for MK22F51212
+   * Component: Startup Version: 1.0.0
+
+<h2>Collection of Component include folders:</h2>
+  .\RTE\Device\MK22FN512VLH12
+  .\RTE\_Target_1
+  C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include
+  C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\DSP\Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: NXP::Device:Startup:1.0.0
+      Source file:   arm\startup_MK22F51212.s
+      Include file:  MK22F51212_features.h
+      Include file:  system_MK22F51212.h
+      Include file:  fsl_device_registers.h
+      Source file:   system_MK22F51212.c
+      Include file:  MK22F51212.h
+
+   * Component: ARM::CMSIS:DSP:1.5.2
+      Library file:  CMSIS\Lib\ARM\arm_cortexM4lf_math.lib
+      Include file:  CMSIS\DSP\Include\arm_math.h
+
+   * Component: ARM::CMSIS:CORE:5.1.2
+Build Time Elapsed:  00:00:06
+</pre>
+</body>
+</html>

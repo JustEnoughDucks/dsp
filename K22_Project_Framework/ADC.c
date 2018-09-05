@@ -29,7 +29,7 @@ void ADC_Init(void){
 	ADC0->SC1[0] 		=	//ADC_SC1_COCO_MASK			|		//Read only, if set conversion is completed.
 										//ADC_SC1_AIEN_MASK			|		//If enabled allows conversion complete interrupts.  When COCO is set while AIEN = 1, an interrupt is triggered.
 										//ADC_SC1_DIFF_MASK 		|		//If enabled differential conversions are enabled.  Leave as 0 for single ended conversions.
-										ADC_SC1_ADCH(0x00)			|		//Controls which channel is read from.  15 disables, which will be left until we are ready to select the read pin.
+										ADC_SC1_ADCH(0xFF)			|		//Controls which channel is read from.  15 disables, which will be left until we are ready to select the read pin.
 										0x00u;
 	
 	//Configure ADC0_CFG1 - Configuration Register 1, controls mode of operation, clock source, clock divide, low power and long sample time settings

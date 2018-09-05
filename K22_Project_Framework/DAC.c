@@ -32,7 +32,7 @@ void DAC_Init(void){
 										0x00u;
 	
 	//Configure DAC0_C0 - Control Register 0, DO NOT USE 32 OR 16 BIT ACCESSES TO THIS REGISTER!!!
-	DAC0->C0				=	DAC_C0_DACEN_MASK			|		//DAC enable bit.
+	DAC0->C0				=	//DAC_C0_DACEN_MASK			|		//DAC enable bit.
 										DAC_C0_DACRFS_MASK			|		//DAC Reference Select.  If cleared use DACREF_1, if set use DACREF_2.
 										//DAC_C0_DACTRGSEL_MASK	|		//DAC Trigger Select.  If cleared hardware triggered, if set software triggered.
 										//DAC_C0_DACSWTRG_MASK	|		//DAC SW Trigger.  Write only, always reads 0.  If cleared software trigger not valed, if set software trigger valid.

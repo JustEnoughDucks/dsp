@@ -24,7 +24,7 @@ void PIT0_IRQHandler(void){	//This function is called when the timer interrupt e
 	if(direction)
 	{
 		i++;
-		if(i == 20000)
+		if(i == 2000)
 		{
 			direction = 0;
 		}
@@ -36,7 +36,7 @@ void PIT0_IRQHandler(void){	//This function is called when the timer interrupt e
 		}
 		i--;
 	}
-	valDAC = valADC * (i+2000)/22000;
+	valDAC = valADC * (i+200)/2200;
 	
 	DAC0->DAT->DATL = DAC_DATL_DATA0((valDAC))	;		//Set DAC Output
 	DAC0->DAT->DATH = DAC_DATH_DATA1((valDAC >> 8)	&0x0F)	;		//Set DAC Output

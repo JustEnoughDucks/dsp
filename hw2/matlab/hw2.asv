@@ -31,8 +31,8 @@ figure;
 %% DSP Homework 2 2.4-2
 
 T = 1;
-
-h = @(t) 1/(T)*sinc(3*t/T) * (heaviside(t) - heaviside(t-T));
+sym t;
+h = @(t) 6/(T)*sinc(6*t/T) * (heaviside(t) - heaviside(t-T));
 
 fplot(h);
 figure;
@@ -66,18 +66,17 @@ figure;
 w1c = 3;
 w2c = 4;
 
-Hbp = @(w) 1./((w0.*(((w).^2- (w1c.*w2c))./((j*w).*(w2c-w1c)))).^3 + ...
-    2.*(w0.*(((w).^2- (w1c.*w2c))./((j*w).*(w2c-w1c)))).^2 +  ...
-    2.*(w0.*(((w).^2- (w1c.*w2c))./((j*w).*(w2c-w1c)))) + 1);
+Hbp = @(w) 1./((w0.*((w.^2- w1c.*w2c)./(w.*(w2c-w1c)))).^3 + 2.*((w0.*w1b)./(-w*j)).^2 + 2.* (w0.*w1b)./(-j*w) + 1);
 subplot(2,1,1);
 plot(w, abs(Hbp(w)));
 grid on
 xlabel('Frequency (rads)');
 ylabel('Magnitude');
-title('Magnitude plot of H(w) of the Band Pass Filter');
+title('Magnitude plot of H(w) of the High Pass Filter');
 subplot(2,1,2);
 plot(w, angle(Hbp(w)));
 grid on
 xlabel('Frequency (rads)');
 ylabel('Phase angle');
-title('Phase plot of H(w) of the Band Pass Filter');
+title('Phase plot of H(w) of the High Pass Filter');
+figure;

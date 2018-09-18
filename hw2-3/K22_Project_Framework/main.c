@@ -14,7 +14,7 @@
 #include "math.h"																//Math Header
 
 uint16_t valADC, valDAC;
-uint8_t highMask, lowMask;
+uint16_t bitMask;
 int N = 0, i;
 
 
@@ -24,20 +24,15 @@ void PIT0_IRQHandler(void){	//This function is called when the timer interrupt e
 	ADC0->SC1[0]	=	ADC_SC1_ADCH(0x00);
 
 	
-	if(N <= 8)
+	if(N <= 12)
 	{
-		highMask = 0x00;
-		lowMask = (0xFF >> (8 - N)); 
-	}else if(N > 8 && N < 13)
-	{
-		lowMask = 0xFF;
-		highMask = (0x0F >> (12-N));
+		bitMask = (0x0FFF << (12 - N)); 
 	}
 	
-	valDAC = valADC;
+	valDAC = valADC &bitMask;
 	
-	DAC0->DAT->DATL = DAC_DATL_DATA0((valDAC) &lowMask)	;		//Set DAC Output
-	DAC0->DAT->DATH = DAC_DATH_DATA1((valDAC >> 8)	&highMask)	;		//Set DAC Output
+	DAC0->DAT->DATL = DAC_DATL_DATA0(valDAC)	;		//Set DAC Output
+	DAC0->DAT->DATH = DAC_DATH_DATA1((valDAC >> 8))	;		//Set DAC Output
 	
 	NVIC_ClearPendingIRQ(PIT0_IRQn);							//Clears interrupt flag in NVIC Register
 	PIT->CHANNEL[0].TFLG	= PIT_TFLG_TIF_MASK;		//Clears interrupt flag in PIT Register

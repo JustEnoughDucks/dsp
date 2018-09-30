@@ -1,71 +1,72 @@
 Dependencies for Project 'K22_Project_Framework', Target 'Target 1': (DO NOT MODIFY !)
-F (.\ADC.c)(0x5BA0279D)(-c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork -I.\RTE\Device\MK22FN512VLH12-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\DSP\Include-IC:\Keil_v5\ARM\PACK\NXP\MK22F51212_DFP\10.0.3-D__UVISION_VERSION="524" -D_RTE_ -DCPU_MK22FN512VLH12 --C99-o .\adc.o --omf_browse .\adc.crf --depend .\adc.d)
-I (.\RTE\Device\MK22FN512VLH12\MK22F51212.h)(0x5BA0279D)
+F (.\ADC.c)(0x5BAFF6B4)(-c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork -I.\RTE\Device\MK22FN512VLH12-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\DSP\Include-IC:\Keil_v5\ARM\PACK\NXP\MK22F51212_DFP\10.0.3-D__UVISION_VERSION="524" -D_RTE_ -DCPU_MK22FN512VLH12 --C99-o .\adc.o --omf_browse .\adc.crf --depend .\adc.d)
+I (.\RTE\Device\MK22FN512VLH12\MK22F51212.h)(0x5BAFF6B5)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include\core_cm4.h)(0x5B622754)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x588C3A14)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include\cmsis_version.h)(0x5B1FF564)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5B58FA96)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include\cmsis_armcc.h)(0x5B622754)
-I (.\RTE\Device\MK22FN512VLH12\system_MK22F51212.h)(0x5BA0279D)
-I (ADC.h)(0x5BA0279D)
-F (.\DAC.c)(0x5BA0279D)(-c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork -I.\RTE\Device\MK22FN512VLH12-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\DSP\Include-IC:\Keil_v5\ARM\PACK\NXP\MK22F51212_DFP\10.0.3-D__UVISION_VERSION="524" -D_RTE_ -DCPU_MK22FN512VLH12 --C99-o .\dac.o --omf_browse .\dac.crf --depend .\dac.d)
-I (.\RTE\Device\MK22FN512VLH12\MK22F51212.h)(0x5BA0279D)
+I (.\RTE\Device\MK22FN512VLH12\system_MK22F51212.h)(0x5BAFF6B5)
+I (ADC.h)(0x5BAFF6B4)
+F (.\DAC.c)(0x5BAFF6B4)(-c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork -I.\RTE\Device\MK22FN512VLH12-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\DSP\Include-IC:\Keil_v5\ARM\PACK\NXP\MK22F51212_DFP\10.0.3-D__UVISION_VERSION="524" -D_RTE_ -DCPU_MK22FN512VLH12 --C99-o .\dac.o --omf_browse .\dac.crf --depend .\dac.d)
+I (.\RTE\Device\MK22FN512VLH12\MK22F51212.h)(0x5BAFF6B5)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include\core_cm4.h)(0x5B622754)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x588C3A14)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include\cmsis_version.h)(0x5B1FF564)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5B58FA96)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include\cmsis_armcc.h)(0x5B622754)
-I (.\RTE\Device\MK22FN512VLH12\system_MK22F51212.h)(0x5BA0279D)
-I (DAC.h)(0x5BA0279D)
-F (.\main.c)(0x5BA0279D)(-c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork -I.\RTE\Device\MK22FN512VLH12-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\DSP\Include-IC:\Keil_v5\ARM\PACK\NXP\MK22F51212_DFP\10.0.3-D__UVISION_VERSION="524" -D_RTE_ -DCPU_MK22FN512VLH12 --C99-o .\main.o --omf_browse .\main.crf --depend .\main.d)
-I (.\RTE\Device\MK22FN512VLH12\MK22F51212.h)(0x5BA0279D)
+I (.\RTE\Device\MK22FN512VLH12\system_MK22F51212.h)(0x5BAFF6B5)
+I (DAC.h)(0x5BAFF6B4)
+F (.\main.c)(0x5BB026C6)(-c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork -I.\RTE\Device\MK22FN512VLH12-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\DSP\Include-IC:\Keil_v5\ARM\PACK\NXP\MK22F51212_DFP\10.0.3-D__UVISION_VERSION="524" -D_RTE_ -DCPU_MK22FN512VLH12 --C99-o .\main.o --omf_browse .\main.crf --depend .\main.d)
+I (.\RTE\Device\MK22FN512VLH12\MK22F51212.h)(0x5BAFF6B5)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include\core_cm4.h)(0x5B622754)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x588C3A14)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include\cmsis_version.h)(0x5B1FF564)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5B58FA96)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include\cmsis_armcc.h)(0x5B622754)
-I (.\RTE\Device\MK22FN512VLH12\system_MK22F51212.h)(0x5BA0279D)
-I (MCG.h)(0x5BA0279D)
-I (TimerInt.h)(0x5BA0279D)
-I (ADC.h)(0x5BA0279D)
-I (DAC.h)(0x5BA0279D)
-F (.\MCG.c)(0x5BA0279D)(-c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork -I.\RTE\Device\MK22FN512VLH12-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\DSP\Include-IC:\Keil_v5\ARM\PACK\NXP\MK22F51212_DFP\10.0.3-D__UVISION_VERSION="524" -D_RTE_ -DCPU_MK22FN512VLH12 --C99-o .\mcg.o --omf_browse .\mcg.crf --depend .\mcg.d)
-I (.\RTE\Device\MK22FN512VLH12\MK22F51212.h)(0x5BA0279D)
+I (.\RTE\Device\MK22FN512VLH12\system_MK22F51212.h)(0x5BAFF6B5)
+I (MCG.h)(0x5BAFF6B4)
+I (TimerInt.h)(0x5BAFF6B4)
+I (ADC.h)(0x5BAFF6B4)
+I (DAC.h)(0x5BAFF6B4)
+I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x588C3A14)
+F (.\MCG.c)(0x5BAFF6B4)(-c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork -I.\RTE\Device\MK22FN512VLH12-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\DSP\Include-IC:\Keil_v5\ARM\PACK\NXP\MK22F51212_DFP\10.0.3-D__UVISION_VERSION="524" -D_RTE_ -DCPU_MK22FN512VLH12 --C99-o .\mcg.o --omf_browse .\mcg.crf --depend .\mcg.d)
+I (.\RTE\Device\MK22FN512VLH12\MK22F51212.h)(0x5BAFF6B5)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include\core_cm4.h)(0x5B622754)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x588C3A14)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include\cmsis_version.h)(0x5B1FF564)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5B58FA96)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include\cmsis_armcc.h)(0x5B622754)
-I (.\RTE\Device\MK22FN512VLH12\system_MK22F51212.h)(0x5BA0279D)
-I (MCG.h)(0x5BA0279D)
-F (.\TimerInt.c)(0x5BA0279D)(-c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork -I.\RTE\Device\MK22FN512VLH12-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\DSP\Include-IC:\Keil_v5\ARM\PACK\NXP\MK22F51212_DFP\10.0.3-D__UVISION_VERSION="524" -D_RTE_ -DCPU_MK22FN512VLH12 --C99-o .\timerint.o --omf_browse .\timerint.crf --depend .\timerint.d)
-I (.\RTE\Device\MK22FN512VLH12\MK22F51212.h)(0x5BA0279D)
+I (.\RTE\Device\MK22FN512VLH12\system_MK22F51212.h)(0x5BAFF6B5)
+I (MCG.h)(0x5BAFF6B4)
+F (.\TimerInt.c)(0x5BAFF6B4)(-c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork -I.\RTE\Device\MK22FN512VLH12-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\DSP\Include-IC:\Keil_v5\ARM\PACK\NXP\MK22F51212_DFP\10.0.3-D__UVISION_VERSION="524" -D_RTE_ -DCPU_MK22FN512VLH12 --C99-o .\timerint.o --omf_browse .\timerint.crf --depend .\timerint.d)
+I (.\RTE\Device\MK22FN512VLH12\MK22F51212.h)(0x5BAFF6B5)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include\core_cm4.h)(0x5B622754)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x588C3A14)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include\cmsis_version.h)(0x5B1FF564)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5B58FA96)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include\cmsis_armcc.h)(0x5B622754)
-I (.\RTE\Device\MK22FN512VLH12\system_MK22F51212.h)(0x5BA0279D)
-I (TimerInt.h)(0x5BA0279D)
-F (.\ADC.h)(0x5BA0279D)()
-F (.\DAC.h)(0x5BA0279D)()
-F (.\MCG.h)(0x5BA0279D)()
-F (.\TimerInt.h)(0x5BA0279D)()
+I (.\RTE\Device\MK22FN512VLH12\system_MK22F51212.h)(0x5BAFF6B5)
+I (TimerInt.h)(0x5BAFF6B4)
+F (.\ADC.h)(0x5BAFF6B4)()
+F (.\DAC.h)(0x5BAFF6B4)()
+F (.\MCG.h)(0x5BAFF6B4)()
+F (.\TimerInt.h)(0x5BAFF6B4)()
 F (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Lib\ARM\arm_cortexM4lf_math.lib)(0x5B2D256C)()
-F (RTE\Device\MK22FN512VLH12\MK22F51212.h)(0x5BA0279D)()
-F (RTE\Device\MK22FN512VLH12\MK22F51212_features.h)(0x5BA0279D)()
-F (RTE\Device\MK22FN512VLH12\MK22FN512xxx12_flash.scf)(0x5BA0279D)()
-F (RTE\Device\MK22FN512VLH12\MK22FN512xxx12_ram.scf)(0x5BA0279D)()
-F (RTE\Device\MK22FN512VLH12\fsl_device_registers.h)(0x5BA0279D)()
-F (RTE\Device\MK22FN512VLH12\startup_MK22F51212.s)(0x5BA0279D)(--cpu Cortex-M4.fp --pd "__EVAL SETA 1" -g --apcs=interwork -I.\RTE\Device\MK22FN512VLH12-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\DSP\Include-IC:\Keil_v5\ARM\PACK\NXP\MK22F51212_DFP\10.0.3--pd "__UVISION_VERSION SETA 524" --pd "_RTE_ SETA 1" --pd "CPU_MK22FN512VLH12 SETA 1"--list .\startup_mk22f51212.lst --xref -o .\startup_mk22f51212.o --depend .\startup_mk22f51212.d)
-F (RTE\Device\MK22FN512VLH12\system_MK22F51212.c)(0x5BA0279D)(-c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork -I.\RTE\Device\MK22FN512VLH12-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\DSP\Include-IC:\Keil_v5\ARM\PACK\NXP\MK22F51212_DFP\10.0.3-D__UVISION_VERSION="524" -D_RTE_ -DCPU_MK22FN512VLH12 --C99-o .\system_mk22f51212.o --omf_browse .\system_mk22f51212.crf --depend .\system_mk22f51212.d)
+F (RTE\Device\MK22FN512VLH12\MK22F51212.h)(0x5BAFF6B5)()
+F (RTE\Device\MK22FN512VLH12\MK22F51212_features.h)(0x5BAFF6B5)()
+F (RTE\Device\MK22FN512VLH12\MK22FN512xxx12_flash.scf)(0x5BAFF6B5)()
+F (RTE\Device\MK22FN512VLH12\MK22FN512xxx12_ram.scf)(0x5BAFF6B5)()
+F (RTE\Device\MK22FN512VLH12\fsl_device_registers.h)(0x5BAFF6B5)()
+F (RTE\Device\MK22FN512VLH12\startup_MK22F51212.s)(0x5BAFF6B5)(--cpu Cortex-M4.fp --pd "__EVAL SETA 1" -g --apcs=interwork -I.\RTE\Device\MK22FN512VLH12-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\DSP\Include-IC:\Keil_v5\ARM\PACK\NXP\MK22F51212_DFP\10.0.3--pd "__UVISION_VERSION SETA 524" --pd "_RTE_ SETA 1" --pd "CPU_MK22FN512VLH12 SETA 1"--list .\startup_mk22f51212.lst --xref -o .\startup_mk22f51212.o --depend .\startup_mk22f51212.d)
+F (RTE\Device\MK22FN512VLH12\system_MK22F51212.c)(0x5BAFF6B5)(-c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork -I.\RTE\Device\MK22FN512VLH12-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\DSP\Include-IC:\Keil_v5\ARM\PACK\NXP\MK22F51212_DFP\10.0.3-D__UVISION_VERSION="524" -D_RTE_ -DCPU_MK22FN512VLH12 --C99-o .\system_mk22f51212.o --omf_browse .\system_mk22f51212.crf --depend .\system_mk22f51212.d)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x588C3A14)
-I (RTE\Device\MK22FN512VLH12\fsl_device_registers.h)(0x5BA0279D)
-I (RTE\Device\MK22FN512VLH12\MK22F51212.h)(0x5BA0279D)
+I (RTE\Device\MK22FN512VLH12\fsl_device_registers.h)(0x5BAFF6B5)
+I (RTE\Device\MK22FN512VLH12\MK22F51212.h)(0x5BAFF6B5)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include\core_cm4.h)(0x5B622754)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include\cmsis_version.h)(0x5B1FF564)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5B58FA96)
 I (C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include\cmsis_armcc.h)(0x5B622754)
-I (RTE\Device\MK22FN512VLH12\system_MK22F51212.h)(0x5BA0279D)
-I (RTE\Device\MK22FN512VLH12\MK22F51212_features.h)(0x5BA0279D)
-F (RTE\Device\MK22FN512VLH12\system_MK22F51212.h)(0x5BA0279D)()
+I (RTE\Device\MK22FN512VLH12\system_MK22F51212.h)(0x5BAFF6B5)
+I (RTE\Device\MK22FN512VLH12\MK22F51212_features.h)(0x5BAFF6B5)
+F (RTE\Device\MK22FN512VLH12\system_MK22F51212.h)(0x5BAFF6B5)()

@@ -13,7 +13,7 @@
 #include "DAC.h"																//DAC Header
 #include "math.h"																//Math Header
 
-#define c3 1000
+#define c3 20000
 #define PI 3.14159
 
 uint16_t valADC;
@@ -51,6 +51,8 @@ void PIT0_IRQHandler(void){	//This function is called when the timer interrupt e
 	//Place Interrupt Service Routine Here
 	//valADC = ADC0->R[0];// << 4;
 	//ADC0->SC1[0]	=	ADC_SC1_ADCH(0x00);
+	GPIOA->PCOR = GPIO_PCOR_PTCO(0x0006);		//Turn Red Off
+	GPIOD->PSOR = GPIO_PSOR_PTSO(0x0020);		//Turn Blue On
 
 	f = c3/40;
 	sumVal = .7672;
@@ -74,6 +76,9 @@ void PIT0_IRQHandler(void){	//This function is called when the timer interrupt e
 	//t = i * .0001f;
 	t += .0001f;
 	
+	GPIOA->PSOR = GPIO_PSOR_PTSO(0x0006);		//Turn 
+	GPIOD->PCOR = GPIO_PCOR_PTCO(0x0020);
+	
 	NVIC_ClearPendingIRQ(PIT0_IRQn);							//Clears interrupt flag in NVIC Register
 	PIT->CHANNEL[0].TFLG	= PIT_TFLG_TIF_MASK;		//Clears interrupt flag in PIT Register
 }
@@ -84,7 +89,24 @@ int main(void){
 	ADC_Calibrate();
 	DAC_Init();
 	TimerInt_Init();
+	
+	//Set Port GPIO
+	SIM -> SCGC5 = 0x1E00;
+	
+	//Set LED Mode to AT1
+	PORTA->PCR[1] 	= PORT_PCR_MUX(0x01)					;		//Set PTA1 to ALT1
+	PORTD->PCR[5] 	= PORT_PCR_MUX(0x01)					;		//Set PTD5 to ALT1
+	
+	//Set LED to Output
+	GPIOA -> PDDR = GPIO_PDDR_PDD(0x0006);
+	GPIOD -> PDDR = GPIO_PDDR_PDD(0x0020); 
+	
+	//Set Switch inputs
+	GPIOB -> PDDR = GPIO_PDDR_PDD(0x0000); //Set PORTB (SW3) as input
+	GPIOC -> PDDR = GPIO_PDDR_PDD(0x0000); //Set PORTC (SW2) as input
+
 	while(1){
 		//Main loop goes here
+		
 	}
 }

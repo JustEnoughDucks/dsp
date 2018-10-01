@@ -16,7 +16,7 @@
 void MCG_Clock120_Init(void){
 	
 	//Enable PTA
-	SIM->SCGC5			|=SIM_SCGC5_PORTA_MASK		;		//Enable PTA XTAL
+	SIM->SCGC5			|=SIM_SCGC5_PORTA_MASK		;	//Enable PTA XTAL
 	PORTA->PCR[18]	= PORT_PCR_MUX(0)					;		//Set PTA18 to XTAL
   PORTA->PCR[19]	= PORT_PCR_MUX(0)					;		//Set PTA19 to XTAL
 	

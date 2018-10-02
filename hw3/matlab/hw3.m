@@ -1,3 +1,51 @@
+%% DSP Homework 3 Problem 1
+K = 2;
+omegac1 = 1.00347; k = 1:K;
+pk1 = (1j*omegac1*exp(1j*pi/(2*K)*(2*k-1))); 
+A1 = poly(pk1);
+
+omega1 = 0:.1:80;
+Hbs1 = @(s) (s.^4 + 2400*s.^2 + 1.44*10^6)./(s.^4 + 56.3694*s.^3 + 3988.9*s.^2 + 67543.3*s + 1.44*10^6)
+grid on
+hold on
+plot(omega1, abs(Hbs1(j*omega1)));
+plot(omega1,.707*ones(size(omega1)),'LineStyle','--');
+plot(omega1,.0631*ones(size(omega1)),'LineStyle','--');
+title('Magnitude Response of H(s)');
+xlabel('Frequency (omega)');
+ylabel('Gain');
+
+%% DSP Homework 3 Problem 2
+ap2 = 1; as2 = 22; wp2 = 20; ws2 = 10; k = 1:K; wp0_2 = 1;
+
+K = abs(ceil(acosh(sqrt((10^(as2/10)-1)/(10^(ap2/10)-1)))/acosh(ws2/wp2)));
+
+ws0_2 = wp0_2*cosh(acosh(sqrt((10.^(as2/10) - 1)/(10.^(ap2/10) - 1)))/K);
+
+ws0_2 = (1+ws0_2)./2
+
+E2 = 2./sqrt(10.^as2 - 1);
+
+pk2 = wp2*sinh(asinh(1/E2)/K)*sin(pi*(2*k-1)/(2*K))+...
+    j*wp2*cosh(asinh(1/E2)/K)*cos(pi*(2*k-1)/(2*K));
+pk2 = wp0_2*ws0_2./pk2; 
+zk2 = j*ws2.*sec(pi*(2*k-1)/(2*K));
+B2 = prod(pk2./zk2)*poly(zk2), A2 = poly(pk2)
+
+Hs2proto = zpk(B2,A2,1)
+
+pk2_trans = 10./pk2;
+zk2_trans = 10./zk2; 
+B2trans = poly(zk2_trans), A2trans = poly(pk2_trans), ws2_trans = 10/ws0_2
+
+Hs2 = zpk(B2trans,A2trans,1)
+
+figure;
+omega2 = 0:.1:30;
+H2hp = (polyval(B2trans,j*omega2))./(polyval(A2trans,j*omega2));
+plot(omega2,20*log10(abs(H2hp)));
+
+
 %% DSP Homework 3 Problem 5 Part a
 A = 5;
 B = 2;
@@ -6,6 +54,8 @@ T = 40;
 t0 = -20:.1:60;
 x = @(t) 0.*(heaviside(t+20)-heaviside(t+12)) + -t./(12).*(heaviside(t+12)-heaviside(t)) + ...
     2*t/15.*(heaviside(t)-heaviside(t-15)) + 0.*(heaviside(t-15) - heaviside(t-20));
+
+figure;
 plot(t0, x(t0) + x(t0-40));
 title('Ideal Pulse waveform x(t)');
 xlabel('Time (s)');

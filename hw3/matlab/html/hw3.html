@@ -1,0 +1,326 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>hw3</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-09-30"><meta name="DC.source" content="hw3.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">DSP Homework 3 Problem 5 Part a</a></li><li><a href="#2">DSP Homework 3 Problem 5 Part b, c, d</a></li><li><a href="#3">Homework 3 Problem 5 Part e</a></li></ul></div><h2 id="1">DSP Homework 3 Problem 5 Part a</h2><pre class="codeinput">A = 5;
+B = 2;
+T = 40;
+
+t0 = -20:.1:60;
+x = @(t) 0.*(heaviside(t+20)-heaviside(t+12)) + -t./(12).*(heaviside(t+12)-heaviside(t)) + <span class="keyword">...</span>
+    2*t/15.*(heaviside(t)-heaviside(t-15)) + 0.*(heaviside(t-15) - heaviside(t-20));
+plot(t0, x(t0) + x(t0-40));
+title(<span class="string">'Ideal Pulse waveform x(t)'</span>);
+xlabel(<span class="string">'Time (s)'</span>);
+ylabel(<span class="string">'Amplitude'</span>);
+</pre><img vspace="5" hspace="5" src="hw3_01.png" alt=""> <h2 id="2">DSP Homework 3 Problem 5 Part b, c, d</h2><pre class="codeinput">t = -.05:.0001:.05;
+
+c1 = .4206;
+c2 = 1.319;
+c3 = 1;
+
+K = [-20:.01:20];
+
+omega0 = 2*pi/T;
+
+Xk = @(K) 1./(T*omega0.^2 .*K.^2) .* (-1/(10+B) - 2/(10 + A) + (1/(10+B) - <span class="keyword">...</span>
+    j*omega0*K).*exp(j*omega0*K*(10+B)) + (2./(10+A) + 2*j*omega0*K).*<span class="keyword">...</span>
+    exp(-j*omega0*K*(10 + A))) .*(K ~= 0) + 1/T.*((10+B)/2 + 10+A).*(K == 0);
+figure;
+plot(K, abs(Xk(K)));
+title(<span class="string">'Xk Fourier Series Analysis by Derivation'</span>);
+
+
+omega0 = 20000*2*pi/T;
+
+Xk = @(K) 1./(T*omega0.^2 .*K.^2) .* (-1/(10+B) - 2/(10 + A) + (1/(10+B) - <span class="keyword">...</span>
+    j*omega0*K).*exp(j*omega0*K*(10+B)) + (2./(10+A) + 2*j*omega0*K).*<span class="keyword">...</span>
+    exp(-j*omega0*K*(10 + A))) .*(K ~= 0) + 1/T.*((10+B)/2 + 10+A).*(K == 0);
+
+Yk = @(K) Xk(K).*c2.*(K ~= 0) + (c1 + c2.*Xk(K)).*(K == 0)
+figure;
+subplot(1,2,1)
+plot(K, abs(Yk(K)));
+title(<span class="string">'Yk at c3 = 20000'</span>);
+axis([-20 20 0 .00001]);
+
+omega0 = c3*2*pi/T;
+
+Xk = @(K) 1./(T*omega0.^2 .*K.^2) .* (-1/(10+B) - 2/(10 + A) + (1/(10+B) - <span class="keyword">...</span>
+    j*omega0*K).*exp(j*omega0*K*(10+B)) + (2./(10+A) + 2*j*omega0*K).*<span class="keyword">...</span>
+    exp(-j*omega0*K*(10 + A)));
+Xk0 = 1/T.*((10+B)/2 + (10+A));
+
+Yk = @(K) Xk(K).*c2.*(K ~= 0);
+Yk0 = (c1 + c2.*Xk0);
+
+subplot(1,2,2);
+plot(K, abs(Yk(K)));
+title(<span class="string">'Yk at c3 = 1'</span>);
+
+
+yk = 0.*t;
+yk = yk + (c1 + c2.*Xk0);
+
+ykMag = zeros(10,1);
+ykTheta = zeros(10,1);
+
+figure;
+<span class="keyword">for</span> K = 1:10
+
+    ak = real(Yk(K));
+    bk = -imag(Yk(K));
+    ykMag(K) = sqrt(ak^2 + bk^2);
+    ykTheta(K) = atan2(-bk,ak);
+
+    yk = yk + ykMag(K).*cos(1000*omega0*K*t + ykTheta(K));
+
+    fprintf(<span class="string">'K=%i, ykmin=%d, ykmax=%d\n'</span>, K, min(yk), max(yk));
+    plot(t, abs(yk));
+    hold <span class="string">on</span>
+<span class="keyword">end</span>
+title(<span class="string">'yk Fourier synthesis'</span>);
+xlabel(<span class="string">'Time'</span>);
+
+ykMag
+ykTheta
+</pre><pre class="codeoutput">
+Yk =
+
+  function_handle with value:
+
+    @(K)Xk(K).*c2.*(K~=0)+(c1+c2.*Xk(K)).*(K==0)
+
+K=1, ykmin=8.567261e-01, ykmax=1.369424e+00
+K=2, ykmin=6.277263e-01, ykmax=1.740914e+00
+K=3, ykmin=6.065137e-01, ykmax=1.779651e+00
+K=4, ykmin=6.726098e-01, ykmax=1.879672e+00
+K=5, ykmin=6.493260e-01, ykmax=1.945712e+00
+K=6, ykmin=6.308818e-01, ykmax=1.949272e+00
+K=7, ykmin=6.638371e-01, ykmax=2.001372e+00
+K=8, ykmin=6.524190e-01, ykmax=2.026034e+00
+K=9, ykmin=6.361764e-01, ykmax=2.022228e+00
+K=10, ykmin=6.599158e-01, ykmax=2.056375e+00
+
+ykMag =
+
+    0.2564
+    0.3836
+    0.0540
+    0.1168
+    0.1276
+    0.0350
+    0.0702
+    0.0757
+    0.0291
+    0.0478
+
+
+ykTheta =
+
+   -1.3882
+    2.8423
+    0.4013
+   -1.3741
+    2.1551
+   -0.5633
+   -2.0350
+    1.4080
+   -1.3896
+   -2.7280
+
+</pre><img vspace="5" hspace="5" src="hw3_02.png" alt=""> <img vspace="5" hspace="5" src="hw3_03.png" alt=""> <img vspace="5" hspace="5" src="hw3_04.png" alt=""> <h2 id="3">Homework 3 Problem 5 Part e</h2><pre class="codeinput">f = c3/40;
+
+sumval = (c1 + c2.*Xk0);
+K = 10;
+
+figure;
+<span class="keyword">for</span> t = 0:.0001:.006
+    <span class="keyword">for</span> k = 1:K
+        sumval = ykMag(k)*cos((k)*20000*omega0*t + ykTheta(k)) + sumval;
+    <span class="keyword">end</span>
+
+	valDAC = sumval*4095/3;
+
+    stem(t,abs(valDAC));
+    hold <span class="string">on</span>
+<span class="keyword">end</span>
+
+title(<span class="string">'Fourier Synthesis K22F Simulation'</span>);
+xlabel(<span class="string">'Time (s)'</span>);
+ylabel(<span class="string">'DAC Samples'</span>);
+</pre><img vspace="5" hspace="5" src="hw3_05.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% DSP Homework 3 Problem 5 Part a
+A = 5;
+B = 2;
+T = 40;
+
+t0 = -20:.1:60;
+x = @(t) 0.*(heaviside(t+20)-heaviside(t+12)) + -t./(12).*(heaviside(t+12)-heaviside(t)) + ...
+    2*t/15.*(heaviside(t)-heaviside(t-15)) + 0.*(heaviside(t-15) - heaviside(t-20));
+plot(t0, x(t0) + x(t0-40));
+title('Ideal Pulse waveform x(t)');
+xlabel('Time (s)');
+ylabel('Amplitude');
+
+%% DSP Homework 3 Problem 5 Part b, c, d
+t = -.05:.0001:.05;
+
+c1 = .4206;
+c2 = 1.319;
+c3 = 1;
+
+K = [-20:.01:20];
+
+omega0 = 2*pi/T;
+
+Xk = @(K) 1./(T*omega0.^2 .*K.^2) .* (-1/(10+B) - 2/(10 + A) + (1/(10+B) - ...
+    j*omega0*K).*exp(j*omega0*K*(10+B)) + (2./(10+A) + 2*j*omega0*K).*...
+    exp(-j*omega0*K*(10 + A))) .*(K ~= 0) + 1/T.*((10+B)/2 + 10+A).*(K == 0);
+figure;
+plot(K, abs(Xk(K)));
+title('Xk Fourier Series Analysis by Derivation');
+
+
+omega0 = 20000*2*pi/T;
+
+Xk = @(K) 1./(T*omega0.^2 .*K.^2) .* (-1/(10+B) - 2/(10 + A) + (1/(10+B) - ...
+    j*omega0*K).*exp(j*omega0*K*(10+B)) + (2./(10+A) + 2*j*omega0*K).*...
+    exp(-j*omega0*K*(10 + A))) .*(K ~= 0) + 1/T.*((10+B)/2 + 10+A).*(K == 0);
+
+Yk = @(K) Xk(K).*c2.*(K ~= 0) + (c1 + c2.*Xk(K)).*(K == 0)
+figure;
+subplot(1,2,1)
+plot(K, abs(Yk(K)));
+title('Yk at c3 = 20000');
+axis([-20 20 0 .00001]);
+
+omega0 = c3*2*pi/T;
+
+Xk = @(K) 1./(T*omega0.^2 .*K.^2) .* (-1/(10+B) - 2/(10 + A) + (1/(10+B) - ...
+    j*omega0*K).*exp(j*omega0*K*(10+B)) + (2./(10+A) + 2*j*omega0*K).*...
+    exp(-j*omega0*K*(10 + A)));
+Xk0 = 1/T.*((10+B)/2 + (10+A));
+
+Yk = @(K) Xk(K).*c2.*(K ~= 0);
+Yk0 = (c1 + c2.*Xk0);
+
+subplot(1,2,2);
+plot(K, abs(Yk(K)));
+title('Yk at c3 = 1');
+
+
+yk = 0.*t;
+yk = yk + (c1 + c2.*Xk0);
+
+ykMag = zeros(10,1);
+ykTheta = zeros(10,1);
+
+figure;
+for K = 1:10
+    
+    ak = real(Yk(K));
+    bk = -imag(Yk(K));
+    ykMag(K) = sqrt(ak^2 + bk^2);
+    ykTheta(K) = atan2(-bk,ak);
+    
+    yk = yk + ykMag(K).*cos(1000*omega0*K*t + ykTheta(K));
+    
+    fprintf('K=%i, ykmin=%d, ykmax=%d\n', K, min(yk), max(yk));
+    plot(t, abs(yk));
+    hold on
+end
+title('yk Fourier synthesis');
+xlabel('Time');
+
+ykMag
+ykTheta
+
+%% Homework 3 Problem 5 Part e
+f = c3/40;
+
+sumval = (c1 + c2.*Xk0);
+K = 10;
+
+figure;
+for t = 0:.0001:.006
+    for k = 1:K
+        sumval = ykMag(k)*cos((k)*20000*omega0*t + ykTheta(k)) + sumval;
+    end
+	
+	valDAC = sumval*4095/3;
+
+    stem(t,abs(valDAC));
+    hold on
+end
+
+title('Fourier Synthesis K22F Simulation');
+xlabel('Time (s)');
+ylabel('DAC Samples');
+##### SOURCE END #####
+--></body></html>

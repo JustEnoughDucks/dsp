@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>hw3</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-09-30"><meta name="DC.source" content="hw3.m"><style type="text/css">
+      --><title>hw3</title><meta name="generator" content="MATLAB 9.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-10-03"><meta name="DC.source" content="hw3.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,21 +66,147 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">DSP Homework 3 Problem 5 Part a</a></li><li><a href="#2">DSP Homework 3 Problem 5 Part b, c, d</a></li><li><a href="#3">Homework 3 Problem 5 Part e</a></li></ul></div><h2 id="1">DSP Homework 3 Problem 5 Part a</h2><pre class="codeinput">A = 5;
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">DSP Homework 3 Problem 1</a></li><li><a href="#2">DSP Homework 3 Problem 2</a></li><li><a href="#3">DSP Homework 3 Problem 5 Part a</a></li><li><a href="#4">DSP Homework 3 Problem 5 Part b, c, d</a></li><li><a href="#5">Homework 3 Problem 5 Part e</a></li></ul></div><h2 id="1">DSP Homework 3 Problem 1</h2><pre class="codeinput">K = 2;
+omegac1 = 1.00347; k = 1:K;
+pk1 = (1j*omegac1*exp(1j*pi/(2*K)*(2*k-1)));
+A1 = poly(pk1);
+
+omega1 = 0:.1:80;
+Hbs1 = @(s) (s.^4 + 2400*s.^2 + 1.44*10^6)./(s.^4 + 56.3694*s.^3 + 3988.9*s.^2 + 67543.3*s + 1.44*10^6)
+grid <span class="string">on</span>
+hold <span class="string">on</span>
+plot(omega1, abs(Hbs1(j*omega1)));
+plot(omega1,.707*ones(size(omega1)),<span class="string">'LineStyle'</span>,<span class="string">'--'</span>);
+plot(omega1,.0631*ones(size(omega1)),<span class="string">'LineStyle'</span>,<span class="string">'--'</span>);
+title(<span class="string">'Magnitude Response of H(s)'</span>);
+xlabel(<span class="string">'Frequency (omega)'</span>);
+ylabel(<span class="string">'Gain'</span>);
+</pre><pre class="codeoutput">
+Hbs1 =
+
+  function_handle with value:
+
+    @(s)(s.^4+2400*s.^2+1.44*10^6)./(s.^4+56.3694*s.^3+3988.9*s.^2+67543.3*s+1.44*10^6)
+
+</pre><img vspace="5" hspace="5" src="hw3_01.png" alt=""> <h2 id="2">DSP Homework 3 Problem 2</h2><pre class="codeinput">ap2 = 1; as2 = 22; wp2 = 20; ws2 = 10; wp0_2 = 1;
+
+K = abs(ceil(acosh(sqrt((10^(as2/10)-1)/(10^(ap2/10)-1)))/acosh(ws2/wp2)));
+
+ws0_2 = wp0_2*cosh(acosh(sqrt((10.^(as2/10) - 1)/(10.^(ap2/10) - 1)))/K);
+
+ws0_2 = (1+ws0_2)./2
+
+ws0_2 = 2;
+
+E2 = 1./sqrt(10.^(as2/10) - 1);
+
+k = 1:K;
+
+pk2prime = - wp0_2*sinh(asinh(1/E2)/K)*sin(pi*(2*k-1)/(2*K))+<span class="keyword">...</span>
+    j*wp0_2*cosh(asinh(1/E2)/K)*cos(pi*(2*k-1)/(2*K));
+pk2 = wp0_2*ws0_2./pk2prime;
+zk2 = j*ws0_2.*sec(pi*(2*k-1)/(2*K));
+B2 = prod(pk2./zk2)*poly(zk2), A2 = poly(pk2)
+
+Hs2proto = zpk(B2,A2,1)
+
+pk2_trans = 20./pk2;
+zk2_trans = 20./zk2;
+B2trans = poly(zk2_trans), A2trans = poly(pk2_trans), ws2_trans = 20/ws0_2
+
+Hs2 = zpk(B2trans,A2trans,1)
+
+figure;
+omega2 = 0:.1:30;
+H2hp = (polyval(B2trans,j*omega2))./(polyval(A2trans,j*omega2));
+subplot(2,1,1);
+hold <span class="string">on</span>
+plot(omega2,20*log(abs(H2hp)));
+plot(omega1,-1*ones(size(omega1)),<span class="string">'LineStyle'</span>,<span class="string">'--'</span>);
+axis([0 30 -100 5]);
+xlabel(<span class="string">'Frequency (Omega)'</span>);
+ylabel(<span class="string">'Magnitude (dB)'</span>);
+hold <span class="string">off</span>
+
+subplot(2,1,2);
+hold <span class="string">on</span>
+plot(omega2,abs(H2hp));
+plot(omega1,.8913*ones(size(omega1)),<span class="string">'LineStyle'</span>,<span class="string">'--'</span>);
+axis([0 30 0 1.1]);
+xlabel(<span class="string">'Frequency (Omega)'</span>);
+ylabel(<span class="string">'Magnitude'</span>);
+hold <span class="string">off</span>
+</pre><pre class="codeoutput">
+ws0_2 =
+
+    1.4849
+
+
+B2 =
+
+  -0.0000 + 0.0000i   0.4781 + 0.0000i  -0.0000 + 0.0000i   2.5499 + 0.0000i
+
+
+A2 =
+
+   1.0000 + 0.0000i   2.6130 + 0.0000i   3.2996 + 0.0000i   2.5499 + 0.0000i
+
+Warning: This zpk model has a complex gain or some complex zeros or poles that
+do not come in conjugate pairs. 
+
+Hs2proto =
+ 
+      s^2 (s-0.4781) (s-2.55)
+  --------------------------------
+  (s-1) (s-2.55) (s-2.613) (s-3.3)
+ 
+Continuous-time zero/pole/gain model.
+
+
+B2trans =
+
+   1.0000 + 0.0000i   0.0000 + 0.0000i  75.0000 + 0.0000i   0.0000 + 0.0000i
+
+
+A2trans =
+
+   1.0e+03 *
+
+   0.0010 + 0.0000i   0.0259 - 0.0000i   0.4099 + 0.0000i   3.1374 - 0.0000i
+
+
+ws2_trans =
+
+    10
+
+Warning: This zpk model has a complex gain or some complex zeros or poles that
+do not come in conjugate pairs. 
+
+Hs2 =
+ 
+           s^2 (s-1) (s-75)
+  ----------------------------------
+  (s-1) (s-25.88) (s-409.9) (s-3137)
+ 
+Continuous-time zero/pole/gain model.
+
+</pre><img vspace="5" hspace="5" src="hw3_02.png" alt=""> <h2 id="3">DSP Homework 3 Problem 5 Part a</h2><pre class="codeinput">A = 5;
 B = 2;
 T = 40;
 
 t0 = -20:.1:60;
 x = @(t) 0.*(heaviside(t+20)-heaviside(t+12)) + -t./(12).*(heaviside(t+12)-heaviside(t)) + <span class="keyword">...</span>
     2*t/15.*(heaviside(t)-heaviside(t-15)) + 0.*(heaviside(t-15) - heaviside(t-20));
+
+figure;
 plot(t0, x(t0) + x(t0-40));
 title(<span class="string">'Ideal Pulse waveform x(t)'</span>);
 xlabel(<span class="string">'Time (s)'</span>);
 ylabel(<span class="string">'Amplitude'</span>);
-</pre><img vspace="5" hspace="5" src="hw3_01.png" alt=""> <h2 id="2">DSP Homework 3 Problem 5 Part b, c, d</h2><pre class="codeinput">t = -.05:.0001:.05;
+</pre><img vspace="5" hspace="5" src="hw3_03.png" alt=""> <h2 id="4">DSP Homework 3 Problem 5 Part b, c, d</h2><pre class="codeinput">t = -.05:.0001:.05;
 
-c1 = .4206;
-c2 = 1.319;
+c1 = .4206
+c2 = 1.319
 c3 = 1;
 
 K = [-20:.01:20];
@@ -94,7 +220,7 @@ figure;
 plot(K, abs(Xk(K)));
 title(<span class="string">'Xk Fourier Series Analysis by Derivation'</span>);
 
-
+c3 = 20000
 omega0 = 20000*2*pi/T;
 
 Xk = @(K) 1./(T*omega0.^2 .*K.^2) .* (-1/(10+B) - 2/(10 + A) + (1/(10+B) - <span class="keyword">...</span>
@@ -108,6 +234,7 @@ plot(K, abs(Yk(K)));
 title(<span class="string">'Yk at c3 = 20000'</span>);
 axis([-20 20 0 .00001]);
 
+c3 = 1;
 omega0 = c3*2*pi/T;
 
 Xk = @(K) 1./(T*omega0.^2 .*K.^2) .* (-1/(10+B) - 2/(10 + A) + (1/(10+B) - <span class="keyword">...</span>
@@ -149,6 +276,21 @@ xlabel(<span class="string">'Time'</span>);
 ykMag
 ykTheta
 </pre><pre class="codeoutput">
+c1 =
+
+    0.4206
+
+
+c2 =
+
+    1.3190
+
+
+c3 =
+
+       20000
+
+
 Yk =
 
   function_handle with value:
@@ -193,7 +335,7 @@ ykTheta =
    -1.3896
    -2.7280
 
-</pre><img vspace="5" hspace="5" src="hw3_02.png" alt=""> <img vspace="5" hspace="5" src="hw3_03.png" alt=""> <img vspace="5" hspace="5" src="hw3_04.png" alt=""> <h2 id="3">Homework 3 Problem 5 Part e</h2><pre class="codeinput">f = c3/40;
+</pre><img vspace="5" hspace="5" src="hw3_04.png" alt=""> <img vspace="5" hspace="5" src="hw3_05.png" alt=""> <img vspace="5" hspace="5" src="hw3_06.png" alt=""> <h2 id="5">Homework 3 Problem 5 Part e</h2><pre class="codeinput">f = c3/40;
 
 sumval = (c1 + c2.*Xk0);
 K = 10;
@@ -213,8 +355,77 @@ figure;
 title(<span class="string">'Fourier Synthesis K22F Simulation'</span>);
 xlabel(<span class="string">'Time (s)'</span>);
 ylabel(<span class="string">'DAC Samples'</span>);
-</pre><img vspace="5" hspace="5" src="hw3_05.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="hw3_07.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
+%% DSP Homework 3 Problem 1
+K = 2;
+omegac1 = 1.00347; k = 1:K;
+pk1 = (1j*omegac1*exp(1j*pi/(2*K)*(2*k-1))); 
+A1 = poly(pk1);
+
+omega1 = 0:.1:80;
+Hbs1 = @(s) (s.^4 + 2400*s.^2 + 1.44*10^6)./(s.^4 + 56.3694*s.^3 + 3988.9*s.^2 + 67543.3*s + 1.44*10^6)
+grid on
+hold on
+plot(omega1, abs(Hbs1(j*omega1)));
+plot(omega1,.707*ones(size(omega1)),'LineStyle','REPLACE_WITH_DASH_DASH');
+plot(omega1,.0631*ones(size(omega1)),'LineStyle','REPLACE_WITH_DASH_DASH');
+title('Magnitude Response of H(s)');
+xlabel('Frequency (omega)');
+ylabel('Gain');
+
+%% DSP Homework 3 Problem 2
+ap2 = 1; as2 = 22; wp2 = 20; ws2 = 10; wp0_2 = 1;
+
+K = abs(ceil(acosh(sqrt((10^(as2/10)-1)/(10^(ap2/10)-1)))/acosh(ws2/wp2)));
+
+ws0_2 = wp0_2*cosh(acosh(sqrt((10.^(as2/10) - 1)/(10.^(ap2/10) - 1)))/K);
+
+ws0_2 = (1+ws0_2)./2
+
+ws0_2 = 2;
+
+E2 = 1./sqrt(10.^(as2/10) - 1);
+
+k = 1:K;
+
+pk2prime = - wp0_2*sinh(asinh(1/E2)/K)*sin(pi*(2*k-1)/(2*K))+...
+    j*wp0_2*cosh(asinh(1/E2)/K)*cos(pi*(2*k-1)/(2*K));
+pk2 = wp0_2*ws0_2./pk2prime; 
+zk2 = j*ws0_2.*sec(pi*(2*k-1)/(2*K));
+B2 = prod(pk2./zk2)*poly(zk2), A2 = poly(pk2)
+
+Hs2proto = zpk(B2,A2,1)
+
+pk2_trans = 20./pk2;
+zk2_trans = 20./zk2; 
+B2trans = poly(zk2_trans), A2trans = poly(pk2_trans), ws2_trans = 20/ws0_2
+
+Hs2 = zpk(B2trans,A2trans,1)
+
+figure;
+omega2 = 0:.1:30;
+H2hp = (polyval(B2trans,j*omega2))./(polyval(A2trans,j*omega2));
+subplot(2,1,1);
+hold on
+plot(omega2,20*log(abs(H2hp)));
+plot(omega1,-1*ones(size(omega1)),'LineStyle','REPLACE_WITH_DASH_DASH');
+axis([0 30 -100 5]);
+xlabel('Frequency (Omega)');
+ylabel('Magnitude (dB)');
+hold off
+
+subplot(2,1,2);
+hold on
+plot(omega2,abs(H2hp));
+plot(omega1,.8913*ones(size(omega1)),'LineStyle','REPLACE_WITH_DASH_DASH');
+axis([0 30 0 1.1]);
+xlabel('Frequency (Omega)');
+ylabel('Magnitude');
+hold off
+
+
+
 %% DSP Homework 3 Problem 5 Part a
 A = 5;
 B = 2;
@@ -223,6 +434,8 @@ T = 40;
 t0 = -20:.1:60;
 x = @(t) 0.*(heaviside(t+20)-heaviside(t+12)) + -t./(12).*(heaviside(t+12)-heaviside(t)) + ...
     2*t/15.*(heaviside(t)-heaviside(t-15)) + 0.*(heaviside(t-15) - heaviside(t-20));
+
+figure;
 plot(t0, x(t0) + x(t0-40));
 title('Ideal Pulse waveform x(t)');
 xlabel('Time (s)');
@@ -231,8 +444,8 @@ ylabel('Amplitude');
 %% DSP Homework 3 Problem 5 Part b, c, d
 t = -.05:.0001:.05;
 
-c1 = .4206;
-c2 = 1.319;
+c1 = .4206
+c2 = 1.319
 c3 = 1;
 
 K = [-20:.01:20];
@@ -246,7 +459,7 @@ figure;
 plot(K, abs(Xk(K)));
 title('Xk Fourier Series Analysis by Derivation');
 
-
+c3 = 20000
 omega0 = 20000*2*pi/T;
 
 Xk = @(K) 1./(T*omega0.^2 .*K.^2) .* (-1/(10+B) - 2/(10 + A) + (1/(10+B) - ...
@@ -260,6 +473,7 @@ plot(K, abs(Yk(K)));
 title('Yk at c3 = 20000');
 axis([-20 20 0 .00001]);
 
+c3 = 1;
 omega0 = c3*2*pi/T;
 
 Xk = @(K) 1./(T*omega0.^2 .*K.^2) .* (-1/(10+B) - 2/(10 + A) + (1/(10+B) - ...

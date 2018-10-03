@@ -16,7 +16,7 @@ xlabel('Frequency (omega)');
 ylabel('Gain');
 
 %% DSP Homework 3 Problem 2
-ap2 = 1; as2 = 22; wp2 = 20; ws2 = 10; k = 1:K; wp0_2 = 1;
+ap2 = 1; as2 = 22; wp2 = 20; ws2 = 10; wp0_2 = 1;
 
 K = abs(ceil(acosh(sqrt((10^(as2/10)-1)/(10^(ap2/10)-1)))/acosh(ws2/wp2)));
 
@@ -24,12 +24,14 @@ ws0_2 = wp0_2*cosh(acosh(sqrt((10.^(as2/10) - 1)/(10.^(ap2/10) - 1)))/K);
 
 ws0_2 = (1+ws0_2)./2
 
-E2 = 2./sqrt(10.^as2 - 1);
+E2 = 1./sqrt(10.^(as2/10) - 1);
 
-pk2 = wp2*sinh(asinh(1/E2)/K)*sin(pi*(2*k-1)/(2*K))+...
-    j*wp2*cosh(asinh(1/E2)/K)*cos(pi*(2*k-1)/(2*K));
-pk2 = wp0_2*ws0_2./pk2; 
-zk2 = j*ws2.*sec(pi*(2*k-1)/(2*K));
+k = 1:K;
+
+pk2prime = - wp0_2*sinh(asinh(1/E2)/K)*sin(pi*(2*k-1)/(2*K))+...
+    j*wp0_2*cosh(asinh(1/E2)/K)*cos(pi*(2*k-1)/(2*K));
+pk2 = wp0_2*ws0_2./pk2prime; 
+zk2 = j*ws0_2.*sec(pi*(2*k-1)/(2*K));
 B2 = prod(pk2./zk2)*poly(zk2), A2 = poly(pk2)
 
 Hs2proto = zpk(B2,A2,1)
@@ -43,7 +45,16 @@ Hs2 = zpk(B2trans,A2trans,1)
 figure;
 omega2 = 0:.1:30;
 H2hp = (polyval(B2trans,j*omega2))./(polyval(A2trans,j*omega2));
-plot(omega2,20*log10(abs(H2hp)));
+subplot(2,1,1);
+plot(omega2,20*log(abs(H2hp)));
+axis([0 30 -100 5]);
+xlabel('Frequency (Omega)');
+ylabel('Magnitude (dB)');
+
+subplot(2,1,2);
+plot(omega2,abs(H2hp));
+xlabel('Frequency (Omega)');
+ylabel('Magnitude');
 
 
 %% DSP Homework 3 Problem 5 Part a

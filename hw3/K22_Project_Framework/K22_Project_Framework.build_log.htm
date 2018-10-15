@@ -28,22 +28,22 @@ Project File Date:  10/01/2018
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Rebuild target 'Target 1'
 assembling startup_MK22F51212.s...
-compiling DAC.c...
 compiling MCG.c...
+compiling DAC.c...
 compiling ADC.c...
-compiling TimerInt.c...
-compiling system_MK22F51212.c...
 compiling main.c...
-main.c(65): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+main.c(76): warning:  #1035-D: single-precision operand implicitly converted to double-precision
   	valDAC = (uint16_t)(sumVal*4095/3.3);
-main.c(111): warning:  #1-D: last line of file ends without a newline
+main.c(123): warning:  #1-D: last line of file ends without a newline
   }
 main.c: 2 warnings, 0 errors
+compiling TimerInt.c...
+compiling system_MK22F51212.c...
 linking...
 .\K22_Project_Framework.axf: Warning: L6914W: option ro-base ignored when using --scatter.
 .\K22_Project_Framework.axf: Warning: L6914W: option rw-base ignored when using --scatter.
 .\K22_Project_Framework.axf: Warning: L6340W: options first and last are ignored for link type of scattered
-Program Size: Code=3964 RO-data=1104 RW-data=116 ZI-data=2144  
+Program Size: Code=4028 RO-data=1104 RW-data=116 ZI-data=2144  
 Finished: 0 information, 3 warning and 0 error messages.
 ".\K22_Project_Framework.axf" - 0 Error(s), 5 Warning(s).
 
@@ -72,10 +72,10 @@ Package Vendor: NXP
 
    * Component: NXP::Device:Startup:1.0.0
       Source file:   arm\startup_MK22F51212.s
+      Include file:  MK22F51212.h
+      Include file:  system_MK22F51212.h
       Include file:  MK22F51212_features.h
       Source file:   system_MK22F51212.c
-      Include file:  system_MK22F51212.h
-      Include file:  MK22F51212.h
       Include file:  fsl_device_registers.h
 
    * Component: ARM::CMSIS:DSP:1.5.2
@@ -83,7 +83,7 @@ Package Vendor: NXP
       Library file:  CMSIS\Lib\ARM\arm_cortexM4lf_math.lib
 
    * Component: ARM::CMSIS:CORE:5.1.2
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>

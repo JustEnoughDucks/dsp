@@ -24,6 +24,8 @@ ws0_2 = wp0_2*cosh(acosh(sqrt((10.^(as2/10) - 1)/(10.^(ap2/10) - 1)))/K);
 
 ws0_2 = (1+ws0_2)./2
 
+ws0_2 = 2;
+
 E2 = 1./sqrt(10.^(as2/10) - 1);
 
 k = 1:K;
@@ -36,9 +38,9 @@ B2 = prod(pk2./zk2)*poly(zk2), A2 = poly(pk2)
 
 Hs2proto = zpk(B2,A2,1)
 
-pk2_trans = 10./pk2;
-zk2_trans = 10./zk2; 
-B2trans = poly(zk2_trans), A2trans = poly(pk2_trans), ws2_trans = 10/ws0_2
+pk2_trans = 20./pk2;
+zk2_trans = 20./zk2; 
+B2trans = poly(zk2_trans), A2trans = poly(pk2_trans), ws2_trans = 20/ws0_2
 
 Hs2 = zpk(B2trans,A2trans,1)
 
@@ -46,15 +48,23 @@ figure;
 omega2 = 0:.1:30;
 H2hp = (polyval(B2trans,j*omega2))./(polyval(A2trans,j*omega2));
 subplot(2,1,1);
+hold on
 plot(omega2,20*log(abs(H2hp)));
+plot(omega1,-1*ones(size(omega1)),'LineStyle','--');
 axis([0 30 -100 5]);
 xlabel('Frequency (Omega)');
 ylabel('Magnitude (dB)');
+hold off
 
 subplot(2,1,2);
+hold on
 plot(omega2,abs(H2hp));
+plot(omega1,.8913*ones(size(omega1)),'LineStyle','--');
+axis([0 30 0 1.1]);
 xlabel('Frequency (Omega)');
 ylabel('Magnitude');
+hold off
+
 
 
 %% DSP Homework 3 Problem 5 Part a
@@ -75,8 +85,8 @@ ylabel('Amplitude');
 %% DSP Homework 3 Problem 5 Part b, c, d
 t = -.05:.0001:.05;
 
-c1 = .4206;
-c2 = 1.319;
+c1 = .4206
+c2 = 1.319
 c3 = 1;
 
 K = [-20:.01:20];
@@ -90,7 +100,7 @@ figure;
 plot(K, abs(Xk(K)));
 title('Xk Fourier Series Analysis by Derivation');
 
-
+c3 = 20000
 omega0 = 20000*2*pi/T;
 
 Xk = @(K) 1./(T*omega0.^2 .*K.^2) .* (-1/(10+B) - 2/(10 + A) + (1/(10+B) - ...
@@ -104,6 +114,7 @@ plot(K, abs(Yk(K)));
 title('Yk at c3 = 20000');
 axis([-20 20 0 .00001]);
 
+c3 = 1;
 omega0 = c3*2*pi/T;
 
 Xk = @(K) 1./(T*omega0.^2 .*K.^2) .* (-1/(10+B) - 2/(10 + A) + (1/(10+B) - ...

@@ -137,48 +137,139 @@ title('Output signal');
 
 %% DSP Homework 5 PRoblem 9 7.7-2
 
+Fs9 = 100/pi;
+T9 = 1/Fs9;
+
 % Part A
-z = sym('z');
-z5 = 0:.1:2*pi;
+Omega9 = 0:.01:pi/2;
 
-H2z1 = @(z) 0.03273793724*(z.^2 + 2*z + 1)/(z.^2-1.81915463768*z + 0.95522952077);
-H2z2 = @(z) 0.01799913516*(z.^2 + 2*z + 1)/(z.^2-1.80572713311*z + 0.88054034430);
-H2z3 = @(z) 0.00399530100*(z.^2 + 2*z + 1)/(z.^2-1.821397927591*z + 0.83800435313);
+b1 = 0.03273793724;
+b2 = 0.01799913516;
+b3 = 0.00399530100;
+a1a = -1.81915463768;
+a1b = 0.95522952077;
+a2a = -1.80572713311;
+a2b = 0.88054034430;
+a3a = -1.821397927591;
+a3b = 0.83800435313;
 
-HzAcompressed = @(z) H2z1(z)*H2z2(z)*H2z3(z);
 
-HzAmatlab = simplifyFraction(HzAcompressed(z),'Expand',true)
+b12 = conv([1 2 1],[1 2 1]);
+ball = conv([b12],[1 2 1])
+bi = b1*b2*b3;
 
-HzAwolfram = @(z) (2.35425*10^-6*z.^6 + 0.0000141255*z.^5 + 0.0000353138 *z.^4 ...
-    + 0.000047085*z.^3 + 0.0000353138*z.^2 + 0.0000141255*z + 2.35425*10^-6) ... 
-    /(z.^6 - 5.44628*z.^5 + 12.561*z.^4 - 15.6912*z.^3 + 11.1915*z.^2 - 4.31982*z + 0.704861)
+a12 = conv([1 a1a a1b],[1 a2a a2b]);
+aall = conv([a12],[1 a3a a3b]);
 
-zplane([2.35425*10^-6 0.0000141255 0.0000353138 0.000047085 0.0000353138 0.0000141255 2.35425*10^-6], ...
-    [1 -5.44628 12.561 -15.6912 11.1915 -4.31982 0.704861]);
+H9z = @(z) bi*(1 + ball(2)*z.^-1 + ball(3)*z.^-2 + ball(4)*z.^-3 + ...
+    ball(5)*z.^-4 + ball(6)*z.^-5 + ball(7)*z.^-6)./(1 + aall(2)*z.^-1 ...
+    + aall(3)*z.^-2 + aall(4)*z.^-3 + aall(5)*z.^-4 + aall(6)*z.^-5 + aall(7)*z.^-6);
 
-Hz5matlab = tf([2.35425*10^-6 0.0000141255 0.0000353138 0.000047085 0.0000353138 0.0000141255 2.35425*10^-6], ...
-    [1 -5.44628 12.561 -15.6912 11.1915 -4.31982 0.704861]);
+
+H9ztf = tf(bi*ball,aall)
+
+% Part B
+figure;
+plot(Omega9./T9, abs(H9z(exp(Omega9*j))));
+title('Magnitude of H(z) Expanded');
+xlabel('Frequency (Omega)');
+ylabel('Amplitude');
+% bode(H9ztf);
+
+i = 1;
+barray(4,1) = 0;
+aarray(4,7) = 0;
+bQF(4,1)    = 0;
+aQF(4,1)    = 0;
+bits(4,1)   = 0;
+
+
+% Part C
+for q = 12:-2:6
+    for n = 1:32
+        bSearch = round(bi*2^n);
+        if abs(bSearch*20) > 2^(q - 2) && abs(bSearch*20) < 2^(q - 1)
+            barray(i,1) = bSearch;
+            bQF(i,1) = -n;
+        end
+        aSearch = round(aall(4)*2^n);
+        if abs(aSearch) > 2^(q -2) && abs(aSearch) < 2^(q - 1)
+            for k = 1:7
+                aarray(i,k) = round(aall(k)*2^n);
+            end
+            aQF(i,1)    = -n;
+        end
+    end
+    bits(i,1) = q;
+    i = i + 1;
+end
+
+totalArray = cat(2, bits, barray, bQF, aarray, aQF)
+coefTable = array2table(totalArray, 'VariableNames', {'Quant_bit','b0', 'b_2_Scale_Fac', ... 
+    'a0','a1','a2','a3','a4','a5','a6','a_2_Scale_Fac'})
+
+% for k = 1:4
+%     figure;
+%     b0Sauce = barray(k)*2^(bQF(k));
+%     aSauce = 2^(aQF(k));
+%     zplane([b0Sauce b0Sauce*ball(2) b0Sauce*ball(3) b0Sauce*ball(4) b0Sauce*ball(5) ...
+%         b0Sauce*ball(6) b0Sauce*ball(7)],[aSauce*aarray(k,1) aSauce*aarray(k,2) ...
+%         aSauce*aarray(k,3) aSauce*aarray(k,4) aSauce*aarray(k,5) aSauce*aarray(k,6) ...
+%         aSauce*aarray(k,7)]);
+%     title(['Pole-Zero plot for quantization ' num2str(bits(k)) ' bits']);
+%     
+% end
 
 figure;
-bode(Hz5matlab);
+zplane([ball(1) ball(2) ball(3) ball(4) ball(5) ball(6) ball(7)], ... 
+    [aall(1) aall(2) aall(3) aall(4) aall(5) aall(6) aall(7)]);
+title('Original Pole-Zero plot before quantization');
 
-figure;
-zplane([1761658490113586317846045285891716120828047375 10569950940681517907076271715350296724968284250 ...
-    26424877351703794767690679288375741812420710625 35233169802271726356920905717834322416560947500 ...
-    26424877351703794767690679288375741812420710625 10569950940681517907076271715350296724968284250 ...
-    1761658490113586317846045285891716120828047375],[748288838313422294120286634350736906063837462003712 ...
-    -4075390308631494457568399495402925982135208187527168 9399273497162929473779986189258117453387029733703680 ...
-    -11741520959356998659883691203559529743502125373751296 8374508494806094059415556565110805732411398514950144 ...
-    -3232472420013922650725117626402730041567267969251328 527439360973673617777959381850283328663024569189376]);
- 
-Hz5 = tf([1761658490113586317846045285891716120828047375 10569950940681517907076271715350296724968284250 ...
-    26424877351703794767690679288375741812420710625 35233169802271726356920905717834322416560947500 ...
-    26424877351703794767690679288375741812420710625 10569950940681517907076271715350296724968284250 ...
-    1761658490113586317846045285891716120828047375],[748288838313422294120286634350736906063837462003712 ...
-    -4075390308631494457568399495402925982135208187527168 9399273497162929473779986189258117453387029733703680 ...
-    -11741520959356998659883691203559529743502125373751296 8374508494806094059415556565110805732411398514950144 ...
-    -3232472420013922650725117626402730041567267969251328 527439360973673617777959381850283328663024569189376]);
+for k = 1:4
+    H9zQuantized = @(z) barray(k)*2^(bQF(k)).*(1 + ball(2)*z.^-1 + ball(3)*z.^-2 + ball(4)*z.^-3 + ...
+        ball(5)*z.^-4 + ball(6)*z.^-5 + ball(7)*z.^-6)./(2^(aQF(k))*(aarray(k,1) + aarray(k,2)*z.^-1 ...
+        + aarray(k,3)*z.^-2 + aarray(k,4)*z.^-3 + aarray(k,5)*z.^-4 + aarray(k,6)*z.^-5 + aarray(k,7)*z.^-6));
 
-figure;
-bode(Hz5);
-% plot(z5, abs(H2z1(exp(j*z5))*H2z2(exp(j*z5))*H2z3(exp(j*z5))));
+    figure;
+    plot(Omega9, abs(H9zQuantized(exp(j*Omega9))));
+    title(['Magnitude plot for quantization ' num2str(bits(k)) ' bits']);
+    xlabel('Frequency (Omega)');
+end
+
+i = 1;
+barray2(10,1) = 0;
+aarray2(10,7) = 0;
+bQF2(10,1)    = 0;
+aQF2(10,1)    = 0;
+bits2(10,1)   = 0;
+
+for q = 15:24
+    for n = 1:256
+        bSearch = round(bi*2^n);
+        if abs(bSearch*20) > 2^(q - 2) && abs(bSearch*20) < 2^(q - 1)
+            barray2(i,1) = bSearch;
+            bQF2(i,1) = -n;
+        end
+        aSearch = round(aall(4)*2^n);
+        if abs(aSearch) > 2^(q -2) && abs(aSearch) < 2^(q - 1)
+            for k = 1:7
+                aarray2(i,k) = round(aall(k)*2^n);
+            end
+            aQF2(i,1)    = -n;
+        end
+    end
+    bits2(i,1) = q;
+    i = i + 1;
+end
+
+for k = 1:10
+    figure;
+    b0Sauce2 = barray2(k)*2^(bQF2(k));
+    aSauce2 = 2^(aQF2(k));
+    zplane([b0Sauce2 b0Sauce2*ball(2) b0Sauce2*ball(3) b0Sauce2*ball(4) b0Sauce2*ball(5) ...
+        b0Sauce2*ball(6) b0Sauce2*ball(7)],[aSauce2*aarray2(k,1) aSauce2*aarray2(k,2) ...
+        aSauce2*aarray2(k,3) aSauce2*aarray2(k,4) aSauce2*aarray2(k,5) aSauce2*aarray2(k,6) ...
+        aSauce2*aarray2(k,7)]);
+    title(['Pole-Zero plot for quantization ' num2str(bits2(k)) ' bits']);
+    
+end

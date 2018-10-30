@@ -1,0 +1,687 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>hw5</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-10-30"><meta name="DC.source" content="hw5.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">DSP Homework 5 Problem 3 6.3-8</a></li><li><a href="#2">DSP Hoework 5 Problem 5 6.5-2</a></li><li><a href="#3">DSP Homework 5 PRoblem 9 7.7-2</a></li></ul></div><h2 id="1">DSP Homework 5 Problem 3 6.3-8</h2><pre class="codeinput">T3 = 1/10;
+
+omega3 = -pi:.01:pi;
+
+Hz3 = @(z) T3/2.*(1+z.^-1)./(1-z.^-1);
+
+plot(omega3, abs(Hz3(exp(j.*omega3))));
+xlabel(<span class="string">'Frequency (Omega)'</span>);
+title(<span class="string">'Magnitude of H(jw) from H(Z)'</span>);
+axis([-pi pi 0 20]);
+figure;
+plot(omega3, angle(Hz3(exp(j.*omega3))));
+xlabel(<span class="string">'Frequency (Omega)'</span>);
+title(<span class="string">'Angle of H(jw) from H(Z)'</span>);
+axis([-pi pi -pi pi]);
+
+<span class="comment">% Part A</span>
+Xz3a = @(z) z.*(z-.995)./(z.^2 - 1.99*z + 1)
+
+figure;
+plot(omega3, abs(Hz3(exp(j.*omega3)).*Xz3a(exp(j.*omega3))));
+xlabel(<span class="string">'Frequency (Omega)'</span>);
+title(<span class="string">'Magnitude of H(w)*Xa(w) from H(Z)'</span>);
+axis([-pi pi 0 20]);
+figure;
+plot(omega3, angle(Hz3(exp(j.*omega3)).*Xz3a(exp(j.*omega3))));
+xlabel(<span class="string">'Frequency (Omega)'</span>);
+title(<span class="string">'Angle of H(w)*Xa(w) from H(Z)'</span>);
+axis([-pi pi -pi pi]);
+
+<span class="comment">% Part B</span>
+Xz3b = @(z) .5*z./(z.^2 - 1.732*z + 1)
+
+figure;
+plot(omega3, abs(Hz3(exp(j.*omega3)).*Xz3b(exp(j.*omega3))));
+xlabel(<span class="string">'Frequency (Omega)'</span>);
+title(<span class="string">'Magnitude of H(w)*Xb(w) from H(Z)'</span>);
+axis([-pi pi 0 50]);
+figure;
+plot(omega3, angle(Hz3(exp(j.*omega3)).*Xz3b(exp(j.*omega3))));
+xlabel(<span class="string">'Frequency (Omega)'</span>);
+title(<span class="string">'Angle of H(w)*Xb(w) from H(Z)'</span>);
+axis([-pi pi -pi pi]);
+
+<span class="comment">% Part C</span>
+Xz3c = @(z) z.^2./(z.^2 + 1)
+
+figure;
+plot(omega3, abs(Hz3(exp(j.*omega3)).*Xz3c(exp(j.*omega3))));
+xlabel(<span class="string">'Frequency (Omega)'</span>);
+title(<span class="string">'Magnitude of H(w)*Xc(w) from H(Z)'</span>);
+axis([-pi pi 0 50]);
+figure;
+plot(omega3, angle(Hz3(exp(j.*omega3)).*Xz3c(exp(j.*omega3))));
+xlabel(<span class="string">'Frequency (Omega)'</span>);
+title(<span class="string">'Angle of H(w)*Xc(w) from H(Z)'</span>);
+axis([-pi pi -pi pi]);
+</pre><pre class="codeoutput">
+Xz3a =
+
+  function_handle with value:
+
+    @(z)z.*(z-.995)./(z.^2-1.99*z+1)
+
+
+Xz3b =
+
+  function_handle with value:
+
+    @(z).5*z./(z.^2-1.732*z+1)
+
+
+Xz3c =
+
+  function_handle with value:
+
+    @(z)z.^2./(z.^2+1)
+
+</pre><img vspace="5" hspace="5" src="hw5_01.png" alt=""> <img vspace="5" hspace="5" src="hw5_02.png" alt=""> <img vspace="5" hspace="5" src="hw5_03.png" alt=""> <img vspace="5" hspace="5" src="hw5_04.png" alt=""> <img vspace="5" hspace="5" src="hw5_05.png" alt=""> <img vspace="5" hspace="5" src="hw5_06.png" alt=""> <img vspace="5" hspace="5" src="hw5_07.png" alt=""> <img vspace="5" hspace="5" src="hw5_08.png" alt=""> <h2 id="2">DSP Hoework 5 Problem 5 6.5-2</h2><pre class="codeinput">t5 = 0:.00001:.001;
+B5 = 10000*pi;
+T5 = 10^-4;
+omega5 = 1:1:1/(T5);
+
+<span class="comment">% Part A</span>
+
+xc5 = @(t) sinc(B5*t/pi);
+Xc5 = @(omega) T5*(heaviside(omega)-heaviside(omega-1/(T5*2)));
+
+figure;
+plot(t5, xc5(t5));
+xlabel(<span class="string">'Time (s)'</span>);
+title(<span class="string">'Input Signal to C/D'</span>);
+figure;
+plot(omega5, abs(Xc5(omega5)));
+xlabel(<span class="string">'Frequency (omega)'</span>);
+title(<span class="string">'Input Spectra to C/D'</span>);
+<span class="comment">% figure;</span>
+<span class="comment">% plot(omega5, angle(Xc5(omega5)));</span>
+<span class="comment">% xlabel('Frequency (omega)');</span>
+<span class="comment">% ylabel('Angle (rads)');</span>
+<span class="comment">% title('Input Spectra to C/D');</span>
+
+<span class="comment">% Part B</span>
+n5 = 0:1:10;
+xd5 = @(n5) sinc(B5*n5*T5/pi);
+
+figure;
+stem(n5, xd5(n5));
+xlabel(<span class="string">'Samples'</span>);
+title(<span class="string">'Input signal for H(Omega)'</span>);
+
+Omega5 = -pi:.01:pi;
+X5 = @(Omega5) pi* (heaviside(Omega5 + pi/2) - heaviside(Omega5 - pi/2));
+
+figure;
+plot(Omega5, abs(X5(Omega5)));
+xlabel(<span class="string">'Frequency (Omega))'</span>);
+title(<span class="string">'Input Spectra for H(Omega)'</span>);
+<span class="comment">% figure;</span>
+<span class="comment">% plot(Omega5, angle(Xd5(Omega5)));</span>
+<span class="comment">% xlabel('Frequency (Omega))');</span>
+<span class="comment">% title('Input Spectra for H(Omega)');</span>
+
+<span class="comment">% Part C</span>
+H5 = @(Omega5) j*Omega5/T5;
+Y5 = @(Omega5) X5(Omega5).*H5(Omega5);
+
+figure;
+plot(Omega5, abs(Y5(Omega5)));
+xlabel(<span class="string">'Frequency (Omega)'</span>);
+title(<span class="string">'Output Spectra for H(Omega)'</span>);
+figure;
+plot(Omega5, angle(Y5(Omega5)));
+xlabel(<span class="string">'Frequency (Omega)'</span>);
+ylabel(<span class="string">'Angle (rads)'</span>);
+title(<span class="string">'Output Spectra angle for H(Omega)'</span>);
+
+yd5 = @(n5) 1/(2*pi*T5).*(pi.*n5.*cos(pi*n5/2) - 2*sin(pi*n5/2))./n5.^2;
+
+figure;
+stem(n5, yd5(n5));
+xlabel(<span class="string">'Samples'</span>);
+ylabel(<span class="string">'Amplitude'</span>);
+title(<span class="string">'Output signal for H(Omega)'</span>);
+
+<span class="comment">% Part D</span>
+
+yc5 = @(t) yd5(t/T5);
+
+figure;
+plot(t5, yc5(t5));
+xlabel(<span class="string">'Time (s)'</span>);
+ylabel(<span class="string">'Amplitude'</span>);
+title(<span class="string">'Output signal'</span>);
+</pre><img vspace="5" hspace="5" src="hw5_09.png" alt=""> <img vspace="5" hspace="5" src="hw5_10.png" alt=""> <img vspace="5" hspace="5" src="hw5_11.png" alt=""> <img vspace="5" hspace="5" src="hw5_12.png" alt=""> <img vspace="5" hspace="5" src="hw5_13.png" alt=""> <img vspace="5" hspace="5" src="hw5_14.png" alt=""> <img vspace="5" hspace="5" src="hw5_15.png" alt=""> <img vspace="5" hspace="5" src="hw5_16.png" alt=""> <h2 id="3">DSP Homework 5 PRoblem 9 7.7-2</h2><pre class="codeinput">Fs9 = 100/pi;
+T9 = 1/Fs9;
+
+<span class="comment">% Part A</span>
+Omega9 = 0:.01:pi/2;
+
+b1 = 0.03273793724;
+b2 = 0.01799913516;
+b3 = 0.00399530100;
+a1a = -1.81915463768;
+a1b = 0.95522952077;
+a2a = -1.80572713311;
+a2b = 0.88054034430;
+a3a = -1.821397927591;
+a3b = 0.83800435313;
+
+
+b12 = conv([1 2 1],[1 2 1]);
+ball = conv([b12],[1 2 1])
+bi = b1*b2*b3;
+
+a12 = conv([1 a1a a1b],[1 a2a a2b]);
+aall = conv([a12],[1 a3a a3b]);
+
+H9z = @(z) bi*(1 + ball(2)*z.^-1 + ball(3)*z.^-2 + ball(4)*z.^-3 + <span class="keyword">...</span>
+    ball(5)*z.^-4 + ball(6)*z.^-5 + ball(7)*z.^-6)./(1 + aall(2)*z.^-1 <span class="keyword">...</span>
+    + aall(3)*z.^-2 + aall(4)*z.^-3 + aall(5)*z.^-4 + aall(6)*z.^-5 + aall(7)*z.^-6);
+
+
+H9ztf = tf(bi*ball,aall)
+
+<span class="comment">% Part B</span>
+figure;
+plot(Omega9./T9, abs(H9z(exp(Omega9*j))));
+title(<span class="string">'Magnitude of H(z) Expanded'</span>);
+xlabel(<span class="string">'Frequency (Omega)'</span>);
+ylabel(<span class="string">'Amplitude'</span>);
+<span class="comment">% bode(H9ztf);</span>
+
+i = 1;
+barray(4,1) = 0;
+aarray(4,7) = 0;
+bQF(4,1)    = 0;
+aQF(4,1)    = 0;
+bits(4,1)   = 0;
+
+
+<span class="comment">% Part C</span>
+<span class="keyword">for</span> q = 12:-2:6
+    <span class="keyword">for</span> n = 1:32
+        bSearch = round(bi*2^n);
+        <span class="keyword">if</span> abs(bSearch*20) &gt; 2^(q - 2) &amp;&amp; abs(bSearch*20) &lt; 2^(q - 1)
+            barray(i,1) = bSearch;
+            bQF(i,1) = -n;
+        <span class="keyword">end</span>
+        aSearch = round(aall(4)*2^n);
+        <span class="keyword">if</span> abs(aSearch) &gt; 2^(q -2) &amp;&amp; abs(aSearch) &lt; 2^(q - 1)
+            <span class="keyword">for</span> k = 1:7
+                aarray(i,k) = round(aall(k)*2^n);
+            <span class="keyword">end</span>
+            aQF(i,1)    = -n;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    bits(i,1) = q;
+    i = i + 1;
+<span class="keyword">end</span>
+
+totalArray = cat(2, bits, barray, bQF, aarray, aQF)
+coefTable = array2table(totalArray, <span class="string">'VariableNames'</span>, {<span class="string">'Quant_bit'</span>,<span class="string">'b0'</span>, <span class="string">'b_2_Scale_Fac'</span>, <span class="keyword">...</span>
+    <span class="string">'a0'</span>,<span class="string">'a1'</span>,<span class="string">'a2'</span>,<span class="string">'a3'</span>,<span class="string">'a4'</span>,<span class="string">'a5'</span>,<span class="string">'a6'</span>,<span class="string">'a_2_Scale_Fac'</span>})
+
+<span class="keyword">for</span> k = 1:4
+    figure;
+    b0Sauce = barray(k)*2^(bQF(k));
+    aSauce = 2^(aQF(k));
+    zplane([b0Sauce b0Sauce*ball(2) b0Sauce*ball(3) b0Sauce*ball(4) b0Sauce*ball(5) <span class="keyword">...</span>
+        b0Sauce*ball(6) b0Sauce*ball(7)],[aSauce*aarray(k,1) aSauce*aarray(k,2) <span class="keyword">...</span>
+        aSauce*aarray(k,3) aSauce*aarray(k,4) aSauce*aarray(k,5) aSauce*aarray(k,6) <span class="keyword">...</span>
+        aSauce*aarray(k,7)]);
+    title([<span class="string">'Pole-Zero plot for quantization '</span> num2str(bits(k)) <span class="string">' bits'</span>]);
+
+<span class="keyword">end</span>
+
+figure;
+zplane([ball(1) ball(2) ball(3) ball(4) ball(5) ball(6) ball(7)], <span class="keyword">...</span>
+    [aall(1) aall(2) aall(3) aall(4) aall(5) aall(6) aall(7)]);
+title(<span class="string">'Original Pole-Zero plot before quantization'</span>);
+
+<span class="keyword">for</span> k = 1:4
+    H9zQuantized = @(z) barray(k)*2^(bQF(k)).*(1 + ball(2)*z.^-1 + ball(3)*z.^-2 + ball(4)*z.^-3 + <span class="keyword">...</span>
+        ball(5)*z.^-4 + ball(6)*z.^-5 + ball(7)*z.^-6)./(2^(aQF(k))*(aarray(k,1) + aarray(k,2)*z.^-1 <span class="keyword">...</span>
+        + aarray(k,3)*z.^-2 + aarray(k,4)*z.^-3 + aarray(k,5)*z.^-4 + aarray(k,6)*z.^-5 + aarray(k,7)*z.^-6));
+
+    figure;
+    plot(Omega9, abs(H9zQuantized(exp(j*Omega9))));
+    title([<span class="string">'Magnitude plot for quantization '</span> num2str(bits(k)) <span class="string">' bits'</span>]);
+    xlabel(<span class="string">'Frequency (Omega)'</span>);
+<span class="keyword">end</span>
+
+i = 1;
+barray2(10,1) = 0;
+aarray2(10,7) = 0;
+bQF2(10,1)    = 0;
+aQF2(10,1)    = 0;
+bits2(10,1)   = 0;
+
+<span class="keyword">for</span> q = 15:24
+    <span class="keyword">for</span> n = 1:256
+        bSearch = round(bi*2^n);
+        <span class="keyword">if</span> abs(bSearch*20) &gt; 2^(q - 2) &amp;&amp; abs(bSearch*20) &lt; 2^(q - 1)
+            barray2(i,1) = bSearch;
+            bQF2(i,1) = -n;
+        <span class="keyword">end</span>
+        aSearch = round(aall(4)*2^n);
+        <span class="keyword">if</span> abs(aSearch) &gt; 2^(q -2) &amp;&amp; abs(aSearch) &lt; 2^(q - 1)
+            <span class="keyword">for</span> k = 1:7
+                aarray2(i,k) = round(aall(k)*2^n);
+            <span class="keyword">end</span>
+            aQF2(i,1)    = -n;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    bits2(i,1) = q;
+    i = i + 1;
+<span class="keyword">end</span>
+
+<span class="keyword">for</span> k = 1:10
+    figure;
+    b0Sauce2 = barray2(k)*2^(bQF2(k));
+    aSauce2 = 2^(aQF2(k));
+    zplane([b0Sauce2 b0Sauce2*ball(2) b0Sauce2*ball(3) b0Sauce2*ball(4) b0Sauce2*ball(5) <span class="keyword">...</span>
+        b0Sauce2*ball(6) b0Sauce2*ball(7)],[aSauce2*aarray2(k,1) aSauce2*aarray2(k,2) <span class="keyword">...</span>
+        aSauce2*aarray2(k,3) aSauce2*aarray2(k,4) aSauce2*aarray2(k,5) aSauce2*aarray2(k,6) <span class="keyword">...</span>
+        aSauce2*aarray2(k,7)]);
+    title([<span class="string">'Pole-Zero plot for quantization '</span> num2str(bits2(k)) <span class="string">' bits'</span>]);
+
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">
+ball =
+
+     1     6    15    20    15     6     1
+
+
+H9ztf =
+ 
+                                                                          
+  2.354e-06 s^6 + 1.413e-05 s^5 + 3.531e-05 s^4 + 4.708e-05 s^3           
+                                                                          
+                                 + 3.531e-05 s^2 + 1.413e-05 s + 2.354e-06
+                                                                          
+  ------------------------------------------------------------------------
+                                                                        
+   s^6 - 5.446 s^5 + 12.56 s^4 - 15.69 s^3 + 11.19 s^2 - 4.32 s + 0.7049
+                                                                        
+ 
+Continuous-time transfer function.
+
+
+totalArray =
+
+  Columns 1 through 6
+
+          12          79         -25         128        -697        1608
+          10          20         -23          32        -174         402
+           8           5         -21           8         -44         100
+           6           1         -19           2         -11          25
+
+  Columns 7 through 11
+
+       -2008        1433        -553          90          -7
+        -502         358        -138          23          -5
+        -126          90         -35           6          -3
+         -31          22          -9           1          -1
+
+
+coefTable =
+
+  4&times;11 table
+
+    Quant_bit    b0    b_2_Scale_Fac    a0      a1      a2      a3       a4      a5     a6    a_2_Scale_Fac
+    _________    __    _____________    ___    ____    ____    _____    ____    ____    __    _____________
+
+       12        79         -25         128    -697    1608    -2008    1433    -553    90         -7      
+       10        20         -23          32    -174     402     -502     358    -138    23         -5      
+        8         5         -21           8     -44     100     -126      90     -35     6         -3      
+        6         1         -19           2     -11      25      -31      22      -9     1         -1      
+
+</pre><img vspace="5" hspace="5" src="hw5_17.png" alt=""> <img vspace="5" hspace="5" src="hw5_18.png" alt=""> <img vspace="5" hspace="5" src="hw5_19.png" alt=""> <img vspace="5" hspace="5" src="hw5_20.png" alt=""> <img vspace="5" hspace="5" src="hw5_21.png" alt=""> <img vspace="5" hspace="5" src="hw5_22.png" alt=""> <img vspace="5" hspace="5" src="hw5_23.png" alt=""> <img vspace="5" hspace="5" src="hw5_24.png" alt=""> <img vspace="5" hspace="5" src="hw5_25.png" alt=""> <img vspace="5" hspace="5" src="hw5_26.png" alt=""> <img vspace="5" hspace="5" src="hw5_27.png" alt=""> <img vspace="5" hspace="5" src="hw5_28.png" alt=""> <img vspace="5" hspace="5" src="hw5_29.png" alt=""> <img vspace="5" hspace="5" src="hw5_30.png" alt=""> <img vspace="5" hspace="5" src="hw5_31.png" alt=""> <img vspace="5" hspace="5" src="hw5_32.png" alt=""> <img vspace="5" hspace="5" src="hw5_33.png" alt=""> <img vspace="5" hspace="5" src="hw5_34.png" alt=""> <img vspace="5" hspace="5" src="hw5_35.png" alt=""> <img vspace="5" hspace="5" src="hw5_36.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% DSP Homework 5 Problem 3 6.3-8
+T3 = 1/10;
+
+omega3 = -pi:.01:pi;
+
+Hz3 = @(z) T3/2.*(1+z.^-1)./(1-z.^-1);
+
+plot(omega3, abs(Hz3(exp(j.*omega3))));
+xlabel('Frequency (Omega)');
+title('Magnitude of H(jw) from H(Z)');
+axis([-pi pi 0 20]);
+figure;
+plot(omega3, angle(Hz3(exp(j.*omega3))));
+xlabel('Frequency (Omega)');
+title('Angle of H(jw) from H(Z)');
+axis([-pi pi -pi pi]);
+
+% Part A
+Xz3a = @(z) z.*(z-.995)./(z.^2 - 1.99*z + 1)
+
+figure;
+plot(omega3, abs(Hz3(exp(j.*omega3)).*Xz3a(exp(j.*omega3))));
+xlabel('Frequency (Omega)');
+title('Magnitude of H(w)*Xa(w) from H(Z)');
+axis([-pi pi 0 20]);
+figure;
+plot(omega3, angle(Hz3(exp(j.*omega3)).*Xz3a(exp(j.*omega3))));
+xlabel('Frequency (Omega)');
+title('Angle of H(w)*Xa(w) from H(Z)');
+axis([-pi pi -pi pi]);
+
+% Part B
+Xz3b = @(z) .5*z./(z.^2 - 1.732*z + 1)
+
+figure;
+plot(omega3, abs(Hz3(exp(j.*omega3)).*Xz3b(exp(j.*omega3))));
+xlabel('Frequency (Omega)');
+title('Magnitude of H(w)*Xb(w) from H(Z)');
+axis([-pi pi 0 50]);
+figure;
+plot(omega3, angle(Hz3(exp(j.*omega3)).*Xz3b(exp(j.*omega3))));
+xlabel('Frequency (Omega)');
+title('Angle of H(w)*Xb(w) from H(Z)');
+axis([-pi pi -pi pi]);
+
+% Part C
+Xz3c = @(z) z.^2./(z.^2 + 1)
+
+figure;
+plot(omega3, abs(Hz3(exp(j.*omega3)).*Xz3c(exp(j.*omega3))));
+xlabel('Frequency (Omega)');
+title('Magnitude of H(w)*Xc(w) from H(Z)');
+axis([-pi pi 0 50]);
+figure;
+plot(omega3, angle(Hz3(exp(j.*omega3)).*Xz3c(exp(j.*omega3))));
+xlabel('Frequency (Omega)');
+title('Angle of H(w)*Xc(w) from H(Z)');
+axis([-pi pi -pi pi]);
+
+%% DSP Hoework 5 Problem 5 6.5-2
+t5 = 0:.00001:.001;
+B5 = 10000*pi;
+T5 = 10^-4;
+omega5 = 1:1:1/(T5);
+
+% Part A
+
+xc5 = @(t) sinc(B5*t/pi);
+Xc5 = @(omega) T5*(heaviside(omega)-heaviside(omega-1/(T5*2)));
+
+figure;
+plot(t5, xc5(t5));
+xlabel('Time (s)');
+title('Input Signal to C/D');
+figure;
+plot(omega5, abs(Xc5(omega5)));
+xlabel('Frequency (omega)');
+title('Input Spectra to C/D');
+% figure;
+% plot(omega5, angle(Xc5(omega5)));
+% xlabel('Frequency (omega)');
+% ylabel('Angle (rads)');
+% title('Input Spectra to C/D');
+
+% Part B
+n5 = 0:1:10;
+xd5 = @(n5) sinc(B5*n5*T5/pi);
+
+figure;
+stem(n5, xd5(n5));
+xlabel('Samples');
+title('Input signal for H(Omega)');
+
+Omega5 = -pi:.01:pi;
+X5 = @(Omega5) pi* (heaviside(Omega5 + pi/2) - heaviside(Omega5 - pi/2));
+
+figure;
+plot(Omega5, abs(X5(Omega5)));
+xlabel('Frequency (Omega))');
+title('Input Spectra for H(Omega)');
+% figure;
+% plot(Omega5, angle(Xd5(Omega5)));
+% xlabel('Frequency (Omega))');
+% title('Input Spectra for H(Omega)');
+
+% Part C
+H5 = @(Omega5) j*Omega5/T5;
+Y5 = @(Omega5) X5(Omega5).*H5(Omega5);
+
+figure;
+plot(Omega5, abs(Y5(Omega5)));
+xlabel('Frequency (Omega)');
+title('Output Spectra for H(Omega)');
+figure;
+plot(Omega5, angle(Y5(Omega5)));
+xlabel('Frequency (Omega)');
+ylabel('Angle (rads)');
+title('Output Spectra angle for H(Omega)');
+
+yd5 = @(n5) 1/(2*pi*T5).*(pi.*n5.*cos(pi*n5/2) - 2*sin(pi*n5/2))./n5.^2;
+
+figure;
+stem(n5, yd5(n5));
+xlabel('Samples');
+ylabel('Amplitude');
+title('Output signal for H(Omega)');
+
+% Part D
+
+yc5 = @(t) yd5(t/T5);
+
+figure;
+plot(t5, yc5(t5));
+xlabel('Time (s)');
+ylabel('Amplitude');
+title('Output signal');
+
+%% DSP Homework 5 PRoblem 9 7.7-2
+
+Fs9 = 100/pi;
+T9 = 1/Fs9;
+
+% Part A
+Omega9 = 0:.01:pi/2;
+
+b1 = 0.03273793724;
+b2 = 0.01799913516;
+b3 = 0.00399530100;
+a1a = -1.81915463768;
+a1b = 0.95522952077;
+a2a = -1.80572713311;
+a2b = 0.88054034430;
+a3a = -1.821397927591;
+a3b = 0.83800435313;
+
+
+b12 = conv([1 2 1],[1 2 1]);
+ball = conv([b12],[1 2 1])
+bi = b1*b2*b3;
+
+a12 = conv([1 a1a a1b],[1 a2a a2b]);
+aall = conv([a12],[1 a3a a3b]);
+
+H9z = @(z) bi*(1 + ball(2)*z.^-1 + ball(3)*z.^-2 + ball(4)*z.^-3 + ...
+    ball(5)*z.^-4 + ball(6)*z.^-5 + ball(7)*z.^-6)./(1 + aall(2)*z.^-1 ...
+    + aall(3)*z.^-2 + aall(4)*z.^-3 + aall(5)*z.^-4 + aall(6)*z.^-5 + aall(7)*z.^-6);
+
+
+H9ztf = tf(bi*ball,aall)
+
+% Part B
+figure;
+plot(Omega9./T9, abs(H9z(exp(Omega9*j))));
+title('Magnitude of H(z) Expanded');
+xlabel('Frequency (Omega)');
+ylabel('Amplitude');
+% bode(H9ztf);
+
+i = 1;
+barray(4,1) = 0;
+aarray(4,7) = 0;
+bQF(4,1)    = 0;
+aQF(4,1)    = 0;
+bits(4,1)   = 0;
+
+
+% Part C
+for q = 12:-2:6
+    for n = 1:32
+        bSearch = round(bi*2^n);
+        if abs(bSearch*20) > 2^(q - 2) && abs(bSearch*20) < 2^(q - 1)
+            barray(i,1) = bSearch;
+            bQF(i,1) = -n;
+        end
+        aSearch = round(aall(4)*2^n);
+        if abs(aSearch) > 2^(q -2) && abs(aSearch) < 2^(q - 1)
+            for k = 1:7
+                aarray(i,k) = round(aall(k)*2^n);
+            end
+            aQF(i,1)    = -n;
+        end
+    end
+    bits(i,1) = q;
+    i = i + 1;
+end
+
+totalArray = cat(2, bits, barray, bQF, aarray, aQF)
+coefTable = array2table(totalArray, 'VariableNames', {'Quant_bit','b0', 'b_2_Scale_Fac', ... 
+    'a0','a1','a2','a3','a4','a5','a6','a_2_Scale_Fac'})
+
+for k = 1:4
+    figure;
+    b0Sauce = barray(k)*2^(bQF(k));
+    aSauce = 2^(aQF(k));
+    zplane([b0Sauce b0Sauce*ball(2) b0Sauce*ball(3) b0Sauce*ball(4) b0Sauce*ball(5) ...
+        b0Sauce*ball(6) b0Sauce*ball(7)],[aSauce*aarray(k,1) aSauce*aarray(k,2) ...
+        aSauce*aarray(k,3) aSauce*aarray(k,4) aSauce*aarray(k,5) aSauce*aarray(k,6) ...
+        aSauce*aarray(k,7)]);
+    title(['Pole-Zero plot for quantization ' num2str(bits(k)) ' bits']);
+    
+end
+
+figure;
+zplane([ball(1) ball(2) ball(3) ball(4) ball(5) ball(6) ball(7)], ... 
+    [aall(1) aall(2) aall(3) aall(4) aall(5) aall(6) aall(7)]);
+title('Original Pole-Zero plot before quantization');
+
+for k = 1:4
+    H9zQuantized = @(z) barray(k)*2^(bQF(k)).*(1 + ball(2)*z.^-1 + ball(3)*z.^-2 + ball(4)*z.^-3 + ...
+        ball(5)*z.^-4 + ball(6)*z.^-5 + ball(7)*z.^-6)./(2^(aQF(k))*(aarray(k,1) + aarray(k,2)*z.^-1 ...
+        + aarray(k,3)*z.^-2 + aarray(k,4)*z.^-3 + aarray(k,5)*z.^-4 + aarray(k,6)*z.^-5 + aarray(k,7)*z.^-6));
+
+    figure;
+    plot(Omega9, abs(H9zQuantized(exp(j*Omega9))));
+    title(['Magnitude plot for quantization ' num2str(bits(k)) ' bits']);
+    xlabel('Frequency (Omega)');
+end
+
+i = 1;
+barray2(10,1) = 0;
+aarray2(10,7) = 0;
+bQF2(10,1)    = 0;
+aQF2(10,1)    = 0;
+bits2(10,1)   = 0;
+
+for q = 15:24
+    for n = 1:256
+        bSearch = round(bi*2^n);
+        if abs(bSearch*20) > 2^(q - 2) && abs(bSearch*20) < 2^(q - 1)
+            barray2(i,1) = bSearch;
+            bQF2(i,1) = -n;
+        end
+        aSearch = round(aall(4)*2^n);
+        if abs(aSearch) > 2^(q -2) && abs(aSearch) < 2^(q - 1)
+            for k = 1:7
+                aarray2(i,k) = round(aall(k)*2^n);
+            end
+            aQF2(i,1)    = -n;
+        end
+    end
+    bits2(i,1) = q;
+    i = i + 1;
+end
+
+for k = 1:10
+    figure;
+    b0Sauce2 = barray2(k)*2^(bQF2(k));
+    aSauce2 = 2^(aQF2(k));
+    zplane([b0Sauce2 b0Sauce2*ball(2) b0Sauce2*ball(3) b0Sauce2*ball(4) b0Sauce2*ball(5) ...
+        b0Sauce2*ball(6) b0Sauce2*ball(7)],[aSauce2*aarray2(k,1) aSauce2*aarray2(k,2) ...
+        aSauce2*aarray2(k,3) aSauce2*aarray2(k,4) aSauce2*aarray2(k,5) aSauce2*aarray2(k,6) ...
+        aSauce2*aarray2(k,7)]);
+    title(['Pole-Zero plot for quantization ' num2str(bits2(k)) ' bits']);
+    
+end
+##### SOURCE END #####
+--></body></html>

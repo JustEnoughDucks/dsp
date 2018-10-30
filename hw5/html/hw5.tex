@@ -1,4 +1,32 @@
-%% DSP Homework 5 Problem 3 6.3-8
+
+% This LaTeX was auto-generated from MATLAB code.
+% To make changes, update the MATLAB code and republish this document.
+
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{color}
+
+\sloppy
+\definecolor{lightgray}{gray}{0.5}
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+    
+    
+\subsection*{Contents}
+
+\begin{itemize}
+\setlength{\itemsep}{-1ex}
+   \item DSP Homework 5 Problem 3 6.3-8
+   \item DSP Hoework 5 Problem 5 6.5-2
+   \item DSP Homework 5 PRoblem 9 7.7-2
+\end{itemize}
+
+
+\subsection*{DSP Homework 5 Problem 3 6.3-8}
+
+\begin{verbatim}
 T3 = 1/10;
 
 omega3 = -pi:.01:pi;
@@ -56,8 +84,51 @@ plot(omega3, angle(Hz3(exp(j.*omega3)).*Xz3c(exp(j.*omega3))));
 xlabel('Frequency (Omega)');
 title('Angle of H(w)*Xc(w) from H(Z)');
 axis([-pi pi -pi pi]);
+\end{verbatim}
 
-%% DSP Hoework 5 Problem 5 6.5-2
+        \color{lightgray} \begin{verbatim}
+Xz3a =
+
+  function_handle with value:
+
+    @(z)z.*(z-.995)./(z.^2-1.99*z+1)
+
+
+Xz3b =
+
+  function_handle with value:
+
+    @(z).5*z./(z.^2-1.732*z+1)
+
+
+Xz3c =
+
+  function_handle with value:
+
+    @(z)z.^2./(z.^2+1)
+
+\end{verbatim} \color{black}
+    
+\includegraphics [width=4in]{hw5_01.eps}
+
+\includegraphics [width=4in]{hw5_02.eps}
+
+\includegraphics [width=4in]{hw5_03.eps}
+
+\includegraphics [width=4in]{hw5_04.eps}
+
+\includegraphics [width=4in]{hw5_05.eps}
+
+\includegraphics [width=4in]{hw5_06.eps}
+
+\includegraphics [width=4in]{hw5_07.eps}
+
+\includegraphics [width=4in]{hw5_08.eps}
+
+
+\subsection*{DSP Hoework 5 Problem 5 6.5-2}
+
+\begin{verbatim}
 t5 = 0:.00001:.001;
 B5 = 10000*pi;
 T5 = 10^-4;
@@ -134,9 +205,28 @@ plot(t5, yc5(t5));
 xlabel('Time (s)');
 ylabel('Amplitude');
 title('Output signal');
+\end{verbatim}
 
-%% DSP Homework 5 PRoblem 9 7.7-2
+\includegraphics [width=4in]{hw5_09.eps}
 
+\includegraphics [width=4in]{hw5_10.eps}
+
+\includegraphics [width=4in]{hw5_11.eps}
+
+\includegraphics [width=4in]{hw5_12.eps}
+
+\includegraphics [width=4in]{hw5_13.eps}
+
+\includegraphics [width=4in]{hw5_14.eps}
+
+\includegraphics [width=4in]{hw5_15.eps}
+
+\includegraphics [width=4in]{hw5_16.eps}
+
+
+\subsection*{DSP Homework 5 PRoblem 9 7.7-2}
+
+\begin{verbatim}
 Fs9 = 100/pi;
 T9 = 1/Fs9;
 
@@ -205,7 +295,7 @@ for q = 12:-2:6
 end
 
 totalArray = cat(2, bits, barray, bQF, aarray, aQF)
-coefTable = array2table(totalArray, 'VariableNames', {'Quant_bit','b0', 'b_2_Scale_Fac', ... 
+coefTable = array2table(totalArray, 'VariableNames', {'Quant_bit','b0', 'b_2_Scale_Fac', ...
     'a0','a1','a2','a3','a4','a5','a6','a_2_Scale_Fac'})
 
 for k = 1:4
@@ -217,11 +307,11 @@ for k = 1:4
         aSauce*aarray(k,3) aSauce*aarray(k,4) aSauce*aarray(k,5) aSauce*aarray(k,6) ...
         aSauce*aarray(k,7)]);
     title(['Pole-Zero plot for quantization ' num2str(bits(k)) ' bits']);
-    
+
 end
 
 figure;
-zplane([ball(1) ball(2) ball(3) ball(4) ball(5) ball(6) ball(7)], ... 
+zplane([ball(1) ball(2) ball(3) ball(4) ball(5) ball(6) ball(7)], ...
     [aall(1) aall(2) aall(3) aall(4) aall(5) aall(6) aall(7)]);
 title('Original Pole-Zero plot before quantization');
 
@@ -271,5 +361,103 @@ for k = 1:10
         aSauce2*aarray2(k,3) aSauce2*aarray2(k,4) aSauce2*aarray2(k,5) aSauce2*aarray2(k,6) ...
         aSauce2*aarray2(k,7)]);
     title(['Pole-Zero plot for quantization ' num2str(bits2(k)) ' bits']);
-    
+
 end
+\end{verbatim}
+
+        \color{lightgray} \begin{verbatim}
+ball =
+
+     1     6    15    20    15     6     1
+
+
+H9ztf =
+ 
+                                                                          
+  2.354e-06 s^6 + 1.413e-05 s^5 + 3.531e-05 s^4 + 4.708e-05 s^3           
+                                                                          
+                                 + 3.531e-05 s^2 + 1.413e-05 s + 2.354e-06
+                                                                          
+  ------------------------------------------------------------------------
+                                                                        
+   s^6 - 5.446 s^5 + 12.56 s^4 - 15.69 s^3 + 11.19 s^2 - 4.32 s + 0.7049
+                                                                        
+ 
+Continuous-time transfer function.
+
+
+totalArray =
+
+  Columns 1 through 6
+
+          12          79         -25         128        -697        1608
+          10          20         -23          32        -174         402
+           8           5         -21           8         -44         100
+           6           1         -19           2         -11          25
+
+  Columns 7 through 11
+
+       -2008        1433        -553          90          -7
+        -502         358        -138          23          -5
+        -126          90         -35           6          -3
+         -31          22          -9           1          -1
+
+
+coefTable =
+
+  4×11 table
+
+    Quant_bit    b0    b_2_Scale_Fac    a0      a1      a2      a3       a4      a5     a6    a_2_Scale_Fac
+    _________    __    _____________    ___    ____    ____    _____    ____    ____    __    _____________
+
+       12        79         -25         128    -697    1608    -2008    1433    -553    90         -7      
+       10        20         -23          32    -174     402     -502     358    -138    23         -5      
+        8         5         -21           8     -44     100     -126      90     -35     6         -3      
+        6         1         -19           2     -11      25      -31      22      -9     1         -1      
+
+\end{verbatim} \color{black}
+    
+\includegraphics [width=4in]{hw5_17.eps}
+
+\includegraphics [width=4in]{hw5_18.eps}
+
+\includegraphics [width=4in]{hw5_19.eps}
+
+\includegraphics [width=4in]{hw5_20.eps}
+
+\includegraphics [width=4in]{hw5_21.eps}
+
+\includegraphics [width=4in]{hw5_22.eps}
+
+\includegraphics [width=4in]{hw5_23.eps}
+
+\includegraphics [width=4in]{hw5_24.eps}
+
+\includegraphics [width=4in]{hw5_25.eps}
+
+\includegraphics [width=4in]{hw5_26.eps}
+
+\includegraphics [width=4in]{hw5_27.eps}
+
+\includegraphics [width=4in]{hw5_28.eps}
+
+\includegraphics [width=4in]{hw5_29.eps}
+
+\includegraphics [width=4in]{hw5_30.eps}
+
+\includegraphics [width=4in]{hw5_31.eps}
+
+\includegraphics [width=4in]{hw5_32.eps}
+
+\includegraphics [width=4in]{hw5_33.eps}
+
+\includegraphics [width=4in]{hw5_34.eps}
+
+\includegraphics [width=4in]{hw5_35.eps}
+
+\includegraphics [width=4in]{hw5_36.eps}
+
+
+
+\end{document}
+    

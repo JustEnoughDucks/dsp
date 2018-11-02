@@ -81,7 +81,7 @@ B = single(real(bL/aK*prod(c2-zi)/prod(c2-pk).*B));
 A = single(A);
 
 
-fid = fopen('coef.h','w');
+fid = fopen('K22_Project_Framework/coef.h','w');
 fprintf(fid,'#define NS %f \n',K);
 fprintf(fid,'float A[NS][3] = { \n');
 for ns = 1:K-1

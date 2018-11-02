@@ -9,7 +9,7 @@ omegap2 = Fs/2*2*pi - omegap1;
 omegapLowProto = 1;
 Omegap1 = omegap1/Fs;
 Omegap2 = omegap2/Fs;
-K = 50;
+K = 8;
 k = 1:K;
 
 omegasLowProto = omegapLowProto*cosh(acosh(sqrt((10^(alphas/10)-1)/(10^(alphap/10)-1)))/K);
@@ -84,16 +84,16 @@ A = single(A);
 fid = fopen('K22_Project_Framework/coef.h','w');
 fprintf(fid,'#define NS %f \n',K);
 fprintf(fid,'float A[NS][3] = { \n');
-for ns = 1:K-1
+for ns = K:-1:2
 	fprintf(fid,'{%f, %f, %f} ,\n', A(ns,1), A(ns,2), A(ns,3));
 end
-fprintf(fid,'{%f, %f, %f} \n};\n\n', A(K,1), A(K,2), A(K,3));
+fprintf(fid,'{%f, %f, %f} \n};\n\n', A(1,1), A(1,2), A(1,3));
 
 fprintf(fid,'float B[NS][3] = { \n');
-for ns = 1:K-1
+for ns = K:-1:2
 	fprintf(fid,'{%f, %f, %f} ,\n', B(ns,1), B(ns,2), B(ns,3));
 end
-fprintf(fid,'{%f, %f, %f} \n};', B(K,1), B(K,2), B(K,3));
+fprintf(fid,'{%f, %f, %f} \n};', B(1,1), B(1,2), B(1,3));
 fclose(fid);
 
 

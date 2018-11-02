@@ -82,7 +82,7 @@ A = single(A);
 
 
 fid = fopen('K22_Project_Framework/coef.h','w');
-fprintf(fid,'#define NS %f \n',K);
+fprintf(fid,'#define NS %f \n',uint16(K));
 fprintf(fid,'float A[NS][3] = { \n');
 for ns = K:-1:2
 	fprintf(fid,'{%f, %f, %f} ,\n', A(ns,1), A(ns,2), A(ns,3));

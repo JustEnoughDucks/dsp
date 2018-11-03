@@ -79,22 +79,72 @@ end
 
 B = single(real(bL/aK*prod(c2-zi)/prod(c2-pk).*B));
 A = single(A);
+B = flipud(B);
+A = flipud(A);
+A(:,3) = [];
+B(:,3) = [];
 
 
 fid = fopen('K22_Project_Framework/coef.h','w');
-fprintf(fid,'#define NS %f \n',uint16(K));
-fprintf(fid,'float A[NS][3] = { \n');
-for ns = K:-1:2
-	fprintf(fid,'{%f, %f, %f} ,\n', A(ns,1), A(ns,2), A(ns,3));
+fprintf(fid,'#define Korder %i \n',uint16(K));
+fprintf(fid,'float A[Korder][2] = { \n');
+for Korder = 1:K-1
+	fprintf(fid,'{%f, %f} ,\n', A(Korder,1), A(Korder,2));
 end
-fprintf(fid,'{%f, %f, %f} \n};\n\n', A(1,1), A(1,2), A(1,3));
+fprintf(fid,'{%f, %f} \n};\n\n', A(K,1), A(K,2));
 
 fprintf(fid,'float B[NS][3] = { \n');
-for ns = K:-1:2
-	fprintf(fid,'{%f, %f, %f} ,\n', B(ns,1), B(ns,2), B(ns,3));
+for Korder = 1:K-1
+	fprintf(fid,'{%f, %f} ,\n', B(Korder,1), B(Korder,2));
 end
-fprintf(fid,'{%f, %f, %f} \n};', B(1,1), B(1,2), B(1,3));
+fprintf(fid,'{%f, %f} \n};', B(K,1), B(K,2));
 fclose(fid);
+
+%% Homework 6 Problem 2 Simulation
+yprev(K+1,3) = 0;
+
+memdex1 = int8(1);
+memdex2 = int8(2);
+memdex3 = int8(3);
+ADCval = 1;
+
+% figure;
+for t = 0:.0001:.006
+    yprev(1,memdex1) = ADCval;
+    Yn = yprev(1,memdex1);
+    Yn = single(Yn);
+    
+    for k = 1:K
+        if(memdex1 == 1 && memdex2 == 2 && memdex3 == 3)
+            Yn = Yn.*(B(k,1).* + B(k,2).*yprev(k,memdex2) + B(k,1).*yprev(k,memdex3) ...
+                ./(1 + A(k,1).*yprev(k+1,memdex2) + A(k,2).*yprev(k+1,memdex3)));
+            yprev(k+1,memdex1) = Yn;
+        elseif(memdex1 == 3 && memdex2 == 1 && memdex3 == 2)
+            Yn = Yn.*(B(k,1) + B(k,2).*yprev(k,memdex2) + B(k,1).*yprev(k,memdex3) ...
+                ./(1 + A(k,1).*yprev(k+1,memdex2) + A(k,2).*yprev(k+1,memdex3)));
+            yprev(k+1,memdex1) = Yn;
+        elseif(memdex1 == 2 && memdex2 == 3 && memdex3 == 1)
+            Yn = Yn.*(B(k,1) + B(k,2).*yprev(k,memdex2) + B(k,1).*yprev(k,memdex3) ...
+                ./(1 + A(k,1).*yprev(k+1,memdex2) + A(k,2).*yprev(k+1,memdex3)));
+            yprev(k+1,memdex1) = Yn;
+        end
+
+    end
+    memdex1 = memdex1 + 1; memdex2 = memdex2 + 1; memdex3 = memdex3 + 1;
+    if(memdex1 > 3)
+        memdex1 = 1;
+    end
+    if(memdex2 > 3)
+        memdex2 = 1;
+    end
+    if(memdex3 > 3)
+        memdex2 = 1;
+    end
+% 	valDAC = sumval*4095/3;
+
+%     stem(t,abs(valDAC));
+%     hold on
+end
 
 
 
@@ -112,8 +162,6 @@ fclose(fid);
 % Omega = 0:.001:pi; 
 % 
 % plot(Omega*Fs./(2*pi),abs(Hz(exp(j*Omega))));
-
-
 
 % i = 1;
 % barray(4,1) = 0;

@@ -9,7 +9,7 @@ omegap2 = Fs/2*2*pi - omegap1;
 omegapLowProto = 1;
 Omegap1 = omegap1/Fs;
 Omegap2 = omegap2/Fs;
-K = 12;
+K = 50;
 k = 1:K;
 
 omegasLowProto = omegapLowProto*cosh(acosh(sqrt((10^(alphas/10)-1)/(10^(alphap/10)-1)))/K);
@@ -104,7 +104,7 @@ for Korder = 1:K-1
 end
 fprintf(fid,'{%f, %f} \n};\n\n', A(K,1), A(K,2));
 
-fprintf(fid,'float B[NS][3] = { \n');
+fprintf(fid,'float B[Korder][3] = { \n');
 for Korder = 1:K-1
 	fprintf(fid,'{%f, %f} ,\n', B(Korder,1), B(Korder,2));
 end

@@ -30,7 +30,8 @@ void PIT0_IRQHandler(void){	//This function is called when the timer interrupt e
 	valADC = ADC0->R[0];// << 4;
 	ADC0->SC1[0]	=	ADC_SC1_ADCH(0x00);
 	GPIOA->PCOR = GPIO_PCOR_PTCO(0x0006);		//Turn Red Off
-	GPIOD->PSOR = GPIO_PSOR_PTSO(0x0020);		//Turn Blue On
+	GPIOD->PCOR = GPIO_PCOR_PTCO(0x0020);		//Turn off Blue LED
+	
 	
 	/*if(sw2)
 	{
@@ -40,7 +41,7 @@ void PIT0_IRQHandler(void){	//This function is called when the timer interrupt e
 	{
 		K--;
 	}*/
-	Yn[0] = float(valADC);
+	Yn[0] = (float) valADC;
 
 	for(k = 0; k < Korder; k++)
 	{
@@ -49,7 +50,7 @@ void PIT0_IRQHandler(void){	//This function is called when the timer interrupt e
         	s[k][1] = B[k][0]*Yn[k] - A[k][1]*Yn[k+1];
 	}
 
-	valDAC = uint16_t(Yn(Korder+1));
+	valDAC = (uint16_t) (Yn[Korder]);
 
 	
 	DAC0->DAT->DATL = DAC_DATL_DATA0((valDAC))	;		//Set DAC Output
@@ -57,7 +58,7 @@ void PIT0_IRQHandler(void){	//This function is called when the timer interrupt e
 
 	
 	GPIOA->PSOR = GPIO_PSOR_PTSO(0x0006);		//Turn on Red LED
-	GPIOD->PCOR = GPIO_PCOR_PTCO(0x0020);		//Turn off Blue LED
+	GPIOD->PSOR = GPIO_PSOR_PTSO(0x0020);		//Turn Blue On
 	
 	NVIC_ClearPendingIRQ(PIT0_IRQn);							//Clears interrupt flag in NVIC Register
 	PIT->CHANNEL[0].TFLG	= PIT_TFLG_TIF_MASK;		//Clears interrupt flag in PIT Register

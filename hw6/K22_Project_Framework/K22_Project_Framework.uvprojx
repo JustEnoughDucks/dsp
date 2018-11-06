@@ -425,6 +425,11 @@
               <FileType>5</FileType>
               <FilePath>.\TimerInt.h</FilePath>
             </File>
+            <File>
+              <FileName>coef.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\coef.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

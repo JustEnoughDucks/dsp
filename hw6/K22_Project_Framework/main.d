@@ -11,3 +11,4 @@
 .\main.o: ADC.h
 .\main.o: DAC.h
 .\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\main.o: coef.h

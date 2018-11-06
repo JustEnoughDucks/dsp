@@ -9,7 +9,7 @@ omegap2 = Fs/2*2*pi - omegap1;
 omegapLowProto = 1;
 Omegap1 = omegap1/Fs;
 Omegap2 = omegap2/Fs;
-K = 60;
+K = 50;
 k = 1:K;
 
 omegasLowProto = omegapLowProto*cosh(acosh(sqrt((10^(alphas/10)-1)/(10^(alphap/10)-1)))/K);

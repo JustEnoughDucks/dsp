@@ -14,7 +14,7 @@
 #include "math.h"																//Math Header
 #include "coef.h"
 
-#define PI 3.14159
+//#define PI 3.14159
 #define sw2 !((GPIOB->PDIR >> 1) & 1)
 #define sw3 !((GPIOC->PDIR >> 17) &1)
 
@@ -30,20 +30,9 @@ void PIT0_IRQHandler(void){	//This function is called when the timer interrupt e
 	GPIOA->PCOR = GPIO_PCOR_PTCO(0x0006);		//Turn Red Off
 	GPIOD->PCOR = GPIO_PCOR_PTCO(0x0020);		//Turn off Blue LED
 	
-	valADC = ADC0->R[0];// << 4;
+	valADC = ADC0->R[0];
 	ADC0->SC1[0]	=	ADC_SC1_ADCH(0x00);
 
-
-	
-	
-	/*if(sw2)
-	{
-		K++;
-	}
-	if(sw3)
-	{
-		K--;
-	}*/
 	Yn[0] = (float) valADC;
 
 	for(i = 0; i < Korder; i++)
@@ -92,6 +81,7 @@ int main(void){
 	GPIOB -> PDDR = GPIO_PDDR_PDD(0x0000); //Set PORTB (SW3) as input
 	GPIOC -> PDDR = GPIO_PDDR_PDD(0x0000); //Set PORTC (SW2) as input
 
+	int myVariableThatIsNeverUsed = 0;
 	while(1){
 		//Main loop goes here
 		

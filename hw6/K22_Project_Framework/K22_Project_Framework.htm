@@ -3,11 +3,11 @@
 <title>Static Call Graph - [.\K22_Project_Framework.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\K22_Project_Framework.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Tue Nov 06 15:45:55 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6070001: Last Updated: Tue Nov  6 15:51:30 2018
 <BR><P>
-<H3>Maximum Stack Usage =          8 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =         24 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-SystemInit
+PIT0_IRQHandler
 <P>
 <H3>
 Mutually Recursive functions
@@ -161,8 +161,8 @@ Function Pointers
 Global Symbols
 </H3>
 <P><STRONG><a name="[84]"></a>__main</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, __main.o(!!!main))
-<BR><BR>[Calls]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
-<LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry
+<BR><BR>[Calls]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry
+<LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
 </UL>
 
 <P><STRONG><a name="[85]"></a>__scatterload</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __scatter.o(!!!scatter))
@@ -250,8 +250,8 @@ Global Symbols
 <P><STRONG><a name="[b9]"></a>__rt_lib_shutdown_user_alloc_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, libshutdown2.o(.ARM.Collect$$libshutdown$$0000000C))
 
 <P><STRONG><a name="[86]"></a>__rt_entry</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry.o(.ARM.Collect$$rtentry$$00000000))
-<BR><BR>[Called By]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload_rt2
-<LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
+<BR><BR>[Called By]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main
+<LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload_rt2
 </UL>
 
 <P><STRONG><a name="[ba]"></a>__rt_entry_presh_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$00000002))
@@ -288,43 +288,43 @@ Global Symbols
 <BR><BR>[Calls]<UL><LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_sys_exit
 </UL>
 
-<P><STRONG><a name="[94]"></a>ADC_Init</STRONG> (Thumb, 48 bytes, Stack size 0 bytes, adc.o(.text))
+<P><STRONG><a name="[94]"></a>ADC_Init</STRONG> (Thumb, 52 bytes, Stack size 0 bytes, adc.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_Calibrate
 </UL>
 
-<P><STRONG><a name="[93]"></a>ADC_Calibrate</STRONG> (Thumb, 150 bytes, Stack size 4 bytes, adc.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = ADC_Calibrate
-</UL>
-<BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_Init
+<P><STRONG><a name="[93]"></a>ADC_Calibrate</STRONG> (Thumb, 104 bytes, Stack size 0 bytes, adc.o(.text))
+<BR><BR>[Calls]<UL><LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[96]"></a>DAC_Init</STRONG> (Thumb, 78 bytes, Stack size 0 bytes, dac.o(.text))
+<P><STRONG><a name="[96]"></a>DAC_Init</STRONG> (Thumb, 72 bytes, Stack size 0 bytes, dac.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[3c]"></a>PIT0_IRQHandler</STRONG> (Thumb, 408 bytes, Stack size 0 bytes, main.o(.text))
+<P><STRONG><a name="[3c]"></a>PIT0_IRQHandler</STRONG> (Thumb, 256 bytes, Stack size 24 bytes, main.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = PIT0_IRQHandler
+</UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_mk22f51212.o(RESET)
 </UL>
-<P><STRONG><a name="[8d]"></a>main</STRONG> (Thumb, 76 bytes, Stack size 0 bytes, main.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = main &rArr; ADC_Calibrate
+<P><STRONG><a name="[8d]"></a>main</STRONG> (Thumb, 96 bytes, Stack size 8 bytes, main.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = main
 </UL>
 <BR>[Calls]<UL><LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TimerInt_Init
 <LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MCG_Clock120_Init
 <LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DAC_Init
-<LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_Calibrate
 <LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_Init
+<LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_Calibrate
 </UL>
 <BR>[Called By]<UL><LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry_main
 </UL>
 
-<P><STRONG><a name="[95]"></a>MCG_Clock120_Init</STRONG> (Thumb, 156 bytes, Stack size 0 bytes, mcg.o(.text))
+<P><STRONG><a name="[95]"></a>MCG_Clock120_Init</STRONG> (Thumb, 136 bytes, Stack size 0 bytes, mcg.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[97]"></a>TimerInt_Init</STRONG> (Thumb, 108 bytes, Stack size 0 bytes, timerint.o(.text))
+<P><STRONG><a name="[97]"></a>TimerInt_Init</STRONG> (Thumb, 68 bytes, Stack size 0 bytes, timerint.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
@@ -742,18 +742,16 @@ Global Symbols
 <P><STRONG><a name="[22]"></a>WDOG_EWM_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_mk22f51212.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> startup_mk22f51212.o(RESET)
 </UL>
+<P><STRONG><a name="[63]"></a>SystemInit</STRONG> (Thumb, 44 bytes, Stack size 0 bytes, system_mk22f51212.o(.text))
+<BR><BR>[Calls]<UL><LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemInitHook
+</UL>
+<BR>[Address Reference Count : 1]<UL><LI> startup_mk22f51212.o(.text)
+</UL>
 <P><STRONG><a name="[98]"></a>SystemInitHook</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, system_mk22f51212.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemInit
 </UL>
 
-<P><STRONG><a name="[63]"></a>SystemInit</STRONG> (Thumb, 40 bytes, Stack size 8 bytes, system_mk22f51212.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = SystemInit
-</UL>
-<BR>[Calls]<UL><LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemInitHook
-</UL>
-<BR>[Address Reference Count : 1]<UL><LI> startup_mk22f51212.o(.text)
-</UL>
-<P><STRONG><a name="[bf]"></a>SystemCoreClockUpdate</STRONG> (Thumb, 426 bytes, Stack size 0 bytes, system_mk22f51212.o(.text), UNUSED)
+<P><STRONG><a name="[bf]"></a>SystemCoreClockUpdate</STRONG> (Thumb, 344 bytes, Stack size 0 bytes, system_mk22f51212.o(.text), UNUSED)
 
 <P><STRONG><a name="[8e]"></a>exit</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, exit.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8 + Unknown Stack Size

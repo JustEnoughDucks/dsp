@@ -35,7 +35,7 @@ void TimerInt_Init(void){
 	//PIT->LTMR64L																;		//Read only, see manual for details
 	
 	//Configure PIT_LDVAL0 - Timer Load Value Register - Used to set period for PIT
-	PIT->CHANNEL[0].LDVAL	=	PIT_LDVAL_TSV(0x00001770)	;		//Set Load value to XXXX clock cycles = YYYYY ms.
+	PIT->CHANNEL[0].LDVAL	=	PIT_LDVAL_TSV(0x00001770u)	;		//Set Load value to XXXX clock cycles = YYYYY ms.
 	
 	//Configure PIT_CVAL0 - Current Timer Value Register - holds current value for PIT
 	//PIT->CHANNEL[0].CVAL												;		//Read only.  Read to find current value for PIT Timer

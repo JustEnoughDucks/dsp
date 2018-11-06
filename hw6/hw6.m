@@ -9,7 +9,7 @@ omegap2 = Fs/2*2*pi - omegap1;
 omegapLowProto = 1;
 Omegap1 = omegap1/Fs;
 Omegap2 = omegap2/Fs;
-K = 8;
+K = 50;
 k = 1:K;
 
 omegasLowProto = omegapLowProto*cosh(acosh(sqrt((10^(alphas/10)-1)/(10^(alphap/10)-1)))/K);
@@ -55,7 +55,7 @@ r = 1;
 for q = 1:2*K
     b = ~b;
     for i = 1:size(zShape)
-        pzDist(i) = sqrt(abs(real(pSort(q,1)) -real(zShape(i))) + abs(imag(pSort(q,1)) -imag(zShape(i))));
+        pzDist(i) = sqrt(abs(real(pSort(q,1)) -real(zShape(i))).^2 + abs(imag(pSort(q,1)) -imag(zShape(i))).^2);
     end
     [M, I] = min(pzDist);
     if(b)
@@ -68,7 +68,17 @@ for q = 1:2*K
     pzDist(I) = [];
 end
 
+figure;
 zplane(pzSort(:,[3 4]),pzSort(:,[1 2]));
+hold on
+for i = 1:K
+    plot([real(pzSort(i,1)) real(pzSort(i, 2)),], ...
+    [imag(pzSort(i,1)) imag(pzSort(i, 2))], 'color', [1/(K+.1*K)*(i) 1/(K+.1*K)*i 1/(K+.1*K)*i]);
+    plot([real(pzSort(i,2)) real(pzSort(i, 4)),], ...
+    [imag(pzSort(i,2)) imag(pzSort(i, 4))], 'color', [1/(K+.1*K)*(i) 1/(K+.1*K)*i 1/(K+.1*K)*i]);
+    plot([real(pzSort(i,1)) real(pzSort(i, 3)),], ...
+    [imag(pzSort(i,1)) imag(pzSort(i, 3))], 'color', [1/(K+.1*K)*(i) 1/(K+.1*K)*i 1/(K+.1*K)*i]);
+end
 
 A(K,3) = 0;
 B(K,3) = 0;
@@ -77,11 +87,12 @@ for i = 1:K
     B(i,:) = poly(pzSort(i,[3 4]));
 end
 
-B = single(real(bL/aK*prod(c2-zi)/prod(c2-pk).*B));
+gain = single(nthroot(real((bL/aK*prod(c2-zi)/prod(c2-pk))),K));
+B = single(gain*B);
 A = single(A);
 B = flipud(B);
 A = flipud(A);
-A(:,3) = [];
+A(:,1) = [];
 B(:,3) = [];
 
 
@@ -101,67 +112,50 @@ fprintf(fid,'{%f, %f} \n};', B(K,1), B(K,2));
 fclose(fid);
 
 %% Homework 6 Problem 2 Simulation
-yprev(K+1,3) = 0;
 
-memdex1 = int8(1);
-memdex2 = int8(2);
-memdex3 = int8(3);
 ADCval = 1;
+yn(K+1) = 0;
+s(K,2) = 0;
 
-% figure;
-for t = 0:.0001:.006
-    yprev(1,memdex1) = ADCval;
-    Yn = yprev(1,memdex1);
-    Yn = single(Yn);
+figure;
+for t = 0:.0001:.005
+    
+%     Yn(1,1) = 4095;
+%     if(t ~= 0)
+%         Yn(1,1) = 0;
+%     end
+
+    Yn(1,1) = 2048*sin(500*2*pi*t) + 2047;
     
     for k = 1:K
-        if(memdex1 == 1 && memdex2 == 2 && memdex3 == 3)
-            Yn = Yn.*(B(k,1).* + B(k,2).*yprev(k,memdex2) + B(k,1).*yprev(k,memdex3) ...
-                ./(1 + A(k,1).*yprev(k+1,memdex2) + A(k,2).*yprev(k+1,memdex3)));
-            yprev(k+1,memdex1) = Yn;
-        elseif(memdex1 == 3 && memdex2 == 1 && memdex3 == 2)
-            Yn = Yn.*(B(k,1) + B(k,2).*yprev(k,memdex2) + B(k,1).*yprev(k,memdex3) ...
-                ./(1 + A(k,1).*yprev(k+1,memdex2) + A(k,2).*yprev(k+1,memdex3)));
-            yprev(k+1,memdex1) = Yn;
-        elseif(memdex1 == 2 && memdex2 == 3 && memdex3 == 1)
-            Yn = Yn.*(B(k,1) + B(k,2).*yprev(k,memdex2) + B(k,1).*yprev(k,memdex3) ...
-                ./(1 + A(k,1).*yprev(k+1,memdex2) + A(k,2).*yprev(k+1,memdex3)));
-            yprev(k+1,memdex1) = Yn;
-        end
+            Yn(k+1) = B(k,1)*Yn(k) + s(k,1);
+            s(k,1) = B(k,2)*Yn(k) - A(k,1)*Yn(k+1) + s(k,2);
+            s(k,2) = B(k,1)*Yn(k) - A(k,2)*Yn(k+1);
+    end
+ 	valDAC = Yn(K+1);
 
-    end
-    memdex1 = memdex1 + 1; memdex2 = memdex2 + 1; memdex3 = memdex3 + 1;
-    if(memdex1 > 3)
-        memdex1 = 1;
-    end
-    if(memdex2 > 3)
-        memdex2 = 1;
-    end
-    if(memdex3 > 3)
-        memdex2 = 1;
-    end
-% 	valDAC = sumval*4095/3;
+    stem(t,abs(valDAC));
+    hold on
+end
+hold off
 
-%     stem(t,abs(valDAC));
-%     hold on
+
+
+
+figure;
+Hz = @(z) 1;
+for k = 1:K
+    Hz = @(z) Hz(z).*(B(k,1)*z.^2 + B(k,2).*z + B(k,1)) ...
+        ./(1*z.^2 + A(k,1).*z + A(k,2))
+    
 end
 
+Omegas = 2*atan(abs(roots([omegasLowProto omegap2Prewarp-omegap1Prewarp -omegasLowProto*omegap1Prewarp*omegap2Prewarp])))
 
+Omega = 0:.001:pi; 
 
-
-
-% Hz = @(z) bL/aK*prod(c2-zi)/prod(c2-pk);
-% for i = 1:K
-%     Hz = @(z) Hz(z).*(1*z.^2 + 2*c1*zi(i)./(zi(i)-c2).*z + (zi(i)+c2)./(zi(i)-c2)) ...
-%         ./(1*z.^2 + 2*c1*pk(i)./(pk(i)-c2).*z + (pk(i)+c2)./(pk(i)-c2))
-%     
-% end
-% 
-% Omegas = 2*atan(abs(roots([omegasLowProto omegap2Prewarp-omegap1Prewarp -omegasLowProto*omegap1Prewarp*omegap2Prewarp])))
-% 
-% Omega = 0:.001:pi; 
-% 
-% plot(Omega*Fs./(2*pi),abs(Hz(exp(j*Omega))));
+plot(Omega*Fs./(2*pi),abs(Hz(exp(j*Omega))));
+title('Frequency Response plot using Coefficient Array');
 
 % i = 1;
 % barray(4,1) = 0;

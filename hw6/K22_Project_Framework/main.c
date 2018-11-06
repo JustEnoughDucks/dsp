@@ -1,8 +1,8 @@
 /**************************************************************************/
 //Name:  main.c																														//
 //Purpose:  Skeleton project with configuration for ADC, DAC, MCG and PIT	//
-//Author:  Ben Gerber																									//
-//Revision:  1.0 18Oct2018 BG DSP Chebyshev Type II									//
+//Author:  Ben Gerber																											//
+//Revision:  1.0 18Oct2018 BG DSP Chebyshev Type II												//
 //Target:  Freescale K22f																									//
 /**************************************************************************/
 
@@ -20,17 +20,20 @@
 
 uint16_t valADC;
 uint16_t valDAC;
-uint16_t K = 1, i, k;
+uint16_t i, k;
 
 float Yn[Korder + 1] = {0};
 float s[Korder][2] = {{0}};
 
 void PIT0_IRQHandler(void){	//This function is called when the timer interrupt expires
 	//Place Interrupt Service Routine Here
+	GPIOA->PCOR = GPIO_PCOR_PTCO(0x0006);		//Turn Red Off
+	GPIOD->PCOR = GPIO_PCOR_PTCO(0x0020);		//Turn off Blue LED
+	
 	valADC = ADC0->R[0];// << 4;
 	ADC0->SC1[0]	=	ADC_SC1_ADCH(0x00);
-	GPIOA->PSOR = GPIO_PSOR_PTSO(0x0006);		//Turn on Red LED
-	GPIOD->PSOR = GPIO_PSOR_PTSO(0x0020);		//Turn Blue On
+
+
 	
 	
 	/*if(sw2)
@@ -43,26 +46,25 @@ void PIT0_IRQHandler(void){	//This function is called when the timer interrupt e
 	}*/
 	Yn[0] = (float) valADC;
 
-	for(k = 0; k < Korder; k++)
+	for(i = 0; i < Korder; i++)
 	{
-		Yn[k+1] = B[k][0]*Yn[k] + s[k][0];
-            	s[k][0] = B[k][1]*Yn[k] - A[k][0]*Yn[k+1] + s[k][1];
-        	s[k][1] = B[k][0]*Yn[k] - A[k][1]*Yn[k+1];
+			Yn[i+1] = B[i][0]*Yn[i] + s[i][0];
+      s[i][0] = B[i][1]*Yn[i] - A[i][0]*Yn[i+1] + s[i][1];
+      s[i][1] = B[i][0]*Yn[i] - A[i][1]*Yn[i+1];
 	}
 
 	valDAC = (uint16_t) (Yn[Korder]);
 
 	
-	DAC0->DAT->DATL = DAC_DATL_DATA0((valDAC))	;		//Set DAC Output
 	DAC0->DAT->DATH = DAC_DATH_DATA1((valDAC >> 8)	&0x0F)	;		//Set DAC Output
+	DAC0->DAT->DATL = DAC_DATL_DATA0((valDAC))	;		//Set DAC Output
 
-	
-
-	GPIOA->PCOR = GPIO_PCOR_PTCO(0x0006);		//Turn Red Off
-	GPIOD->PCOR = GPIO_PCOR_PTCO(0x0020);		//Turn off Blue LED
+	GPIOA->PSOR = GPIO_PSOR_PTSO(0x0006);		//Turn on Red LED
+	GPIOD->PSOR = GPIO_PSOR_PTSO(0x0020);		//Turn Blue On
 	
 	NVIC_ClearPendingIRQ(PIT0_IRQn);							//Clears interrupt flag in NVIC Register
 	PIT->CHANNEL[0].TFLG	= PIT_TFLG_TIF_MASK;		//Clears interrupt flag in PIT Register
+
 }
 
 int main(void){
@@ -77,6 +79,9 @@ int main(void){
 	
 	//Set LED Mode to AT1
 	PORTA->PCR[1] 	= PORT_PCR_MUX(0x01)					;		//Set PTA1 to ALT1
+	PORTA->PCR[2]		= PORT_PCR_MUX(0x01)					;		//
+	PORTB->PCR[17]	= PORT_PCR_MUX(0x01)					;		//
+	PORTC->PCR[1]		=	PORT_PCR_MUX(0x01)					;		//
 	PORTD->PCR[5] 	= PORT_PCR_MUX(0x01)					;		//Set PTD5 to ALT1
 	
 	//Set LED to Output

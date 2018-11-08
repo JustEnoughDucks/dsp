@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\K22_Project_Framework.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\K22_Project_Framework.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Tue Nov 06 16:23:00 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Wed Nov 07 19:35:28 2018
 <BR><P>
 <H3>Maximum Stack Usage =          8 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -311,10 +311,10 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[3c]"></a>PIT0_IRQHandler</STRONG> (Thumb, 408 bytes, Stack size 0 bytes, main.o(.text))
+<P><STRONG><a name="[3c]"></a>PIT0_IRQHandler</STRONG> (Thumb, 1060 bytes, Stack size 0 bytes, main.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> startup_mk22f51212.o(RESET)
 </UL>
-<P><STRONG><a name="[8e]"></a>main</STRONG> (Thumb, 78 bytes, Stack size 0 bytes, main.o(.text))
+<P><STRONG><a name="[8e]"></a>main</STRONG> (Thumb, 318 bytes, Stack size 0 bytes, main.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = main &rArr; ADC_Calibrate
 </UL>
 <BR>[Calls]<UL><LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TimerInt_Init
@@ -559,8 +559,8 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_mk22f51212.o(.text)
 </UL>
 <P><STRONG><a name="[62]"></a>DefaultISR</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_mk22f51212.o(.text))
-<BR>[Address Reference Count : 2]<UL><LI> startup_mk22f51212.o(RESET)
-<LI> startup_mk22f51212.o(.text)
+<BR>[Address Reference Count : 2]<UL><LI> startup_mk22f51212.o(.text)
+<LI> startup_mk22f51212.o(RESET)
 </UL>
 <P><STRONG><a name="[1e]"></a>FTF_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_mk22f51212.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> startup_mk22f51212.o(RESET)

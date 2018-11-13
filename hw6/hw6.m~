@@ -1,7 +1,7 @@
 %% DSP Homework 6 
 clear;
 
-K = 110;
+K = 115;
 z = 0;
 
 matArrayA(4,K,3) = 0;
@@ -173,11 +173,7 @@ for fp = [250 500 1000 2000]
     % Wrong way to implement it. It shoud be Arrary(columns, rows, page)
     % but is specified as Array(page, row, column)
     
-    OnesArray(length(A(:,1)),1) = 1;
-    matArrayA(z,:,:) = [OnesArray(:,1),A(:,1),A(:,2)];
-    matArrayB(z,:,:) = [B(:,1), B(:,2), B(:,1)];
-
+    matArrayA(z) = [1,A(:,1),A(:,2)];
+    matArrayB(z,:,:) = [B(:,2), B(:,1), B(:,2)];
+    
 end
-
-save('arrayA.mat','matArrayA');
-save('arrayB.mat','matArrayB');

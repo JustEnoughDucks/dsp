@@ -22,7 +22,6 @@
 
 uint16_t valADC;
 uint16_t valDAC;
-uint16_t k;
 uint8_t scroll = 0;
 uint16_t integrator1 = 0;
 uint16_t integrator2 = 0;  /* Will range from 0 to the specified MAXIMUM */

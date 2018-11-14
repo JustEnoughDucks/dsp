@@ -1,7 +1,7 @@
 %% DSP Homework 6 
 clear;
 
-K = 110;
+K = 105;
 z = 0;
 
 matArrayA(4,K,3) = 0;

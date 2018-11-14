@@ -115,7 +115,7 @@ for fp = [250 500 1000 2000]
         end
         fprintf(fid,'{%f, %f} \n};\n\n', A(K,1), A(K,2));
 
-        fprintf(fid,'float B%i[Korder][3] = { \n',z);
+        fprintf(fid,'float B%i[Korder][2] = { \n',z);
         for Korder = 1:K-1
             fprintf(fid,'{%f, %f} ,\n', B(Korder,1), B(Korder,2));
         end

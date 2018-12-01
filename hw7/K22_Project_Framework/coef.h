@@ -1,5 +1,5 @@
 #define Korder 51 
-int h[Korder][1] = { 
+int h[Korder] = { 
 {-2.179505e-02} ,
 {-2.329271e-02} ,
 {-9.497769e-03} ,

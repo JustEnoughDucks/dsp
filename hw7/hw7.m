@@ -67,7 +67,7 @@ deltas = max(abs(H(Omega<=Omegas)))
 
         fid = fopen('K22_Project_Framework/coef.h','w');
         fprintf(fid,'#define Korder %i \n',uint8(Morder));
-        fprintf(fid,'int h[Korder][1] = { \n');
+        fprintf(fid,'int h[Korder] = { \n');
         for Korder = 1:Morder
             fprintf(fid,'{%i} ,\n', h(Korder,1));
         end

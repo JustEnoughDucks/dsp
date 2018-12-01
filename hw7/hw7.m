@@ -2,7 +2,7 @@
 T = 1/20000;
 Omegap = 2*pi*160*T;    Omegas = 2*pi*40*T; 
 deltap = 1;             deltas = .01;
-Lh = 51; 
+Lh = 101; 
 K = 10*Lh; 
 k = (0:K-1);
 Omegak = k*2*pi/K;
@@ -52,8 +52,8 @@ plot(Q);
 
 Morder = length(h);
 [hMax,hMaxIndex] = max(h)
-% scale = (2^(16-1)-50)/h(hMaxIndex-1)
-scale = (2^15)/(sum(h)*5);                                      %Q notation
+scale = (2^(16-1)-50)/h(hMaxIndex-1)
+% scale = (2^15)/(sum(h)*5);                                      %Q notation
 hInt = floor(h*(scale));
 
 subplot(211); 

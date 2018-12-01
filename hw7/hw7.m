@@ -27,7 +27,7 @@ plot(parablength, parabola)
 % Q = 1000.0*(Omegak<=Omegas)+1.0*(Omegak>=Omegap);
 % Q(fix(K/2)+2:end) = Q(round(K/2):-1:2);
 Q = 50.0*(Omegak<=Omegas)++ 1.0*(Omegak>=Omegap & Omegak < 1) + ...
-    1.0*(Omegak>=1 & Omegak < 1.5) + 1.0*(Omegak>=1.5);
+    10.0*(Omegak>=1 & Omegak < 1.5) + 10*(Omegak>=1.5);
 Q(fix(K/2)+2:end) = Q(round(K/2):-1:2);
 
 
@@ -52,8 +52,8 @@ plot(Q);
 
 Morder = length(h);
 [hMax,hMaxIndex] = max(h)
-scale = (2^(16-1)-50)/h(hMaxIndex-1)
-% scale = 
+% scale = (2^(16-1)-50)/h(hMaxIndex-1)
+scale = (2^15)/sum(h);                                      %Q notation
 hInt = floor(h*(scale));
 
 subplot(211); 

@@ -53,7 +53,7 @@ plot(Q);
 Morder = length(h);
 [hMax,hMaxIndex] = max(h)
 % scale = (2^(16-1)-50)/h(hMaxIndex-1)
-scale = (2^15)/(sum(h)/5);                                      %Q notation
+scale = (2^15)/(sum(h)*5);                                      %Q notation
 hInt = floor(h*(scale));
 
 subplot(211); 

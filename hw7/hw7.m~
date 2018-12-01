@@ -27,7 +27,7 @@ plot(parablength, parabola)
 % Q = 1000.0*(Omegak<=Omegas)+1.0*(Omegak>=Omegap);
 % Q(fix(K/2)+2:end) = Q(round(K/2):-1:2);
 Q = 50.0*(Omegak<=Omegas)++ 1.0*(Omegak>=Omegap & Omegak < 1) + ...
-    1.0*(Omegak>=1 & Omegak < 1.5) + 1.0*(Omegak>=1.5);
+    .01*(Omegak>=1 & Omegak < 1.5) + 1.0*(Omegak>=1.5);
 Q(fix(K/2)+2:end) = Q(round(K/2):-1:2);
 
 
@@ -35,7 +35,7 @@ Hd = (0.*(Omegak<Omegap) + parabola.*(Omegak>=Omegap & Omegak<=OmegaPR) ...
      + sinfn.*(Omegak >= OmegaPR)).*exp(-1j*k*pi*(Lh-1)/K);
 Hd(fix(K/2)+2:end) = conj(Hd(round(K/2):-1:2));
 l = (0:Lh-1)'; a = exp(1j*l*Omegak)*Q.'/K; b = exp(1j*l*Omegak)*(Hd.*Q/K).';
-a = abs(a); b = abs(b);
+a = real(a); b = real(b);
 A = toeplitz(a); h = (A\b);
 n = (0:Lh-1)'; 
 subplot(211); 
@@ -67,10 +67,11 @@ deltas = max(abs(H(Omega<=Omegas)))
 
         fid = fopen('K22_Project_Framework/coef.h','w');
         fprintf(fid,'#define Korder %i \n',uint8(Morder));
-        fprintf(fid,'float h[Korder][2] = { \n');
-        for Korder = 1:Morder
-            fprintf(fid,'{%f, %f} ,\n', A(Korder,1), A(Korder,2));
+        fprintf(fid,'int h[Korder] = { \n');
+        for Korder = 1:Morder-1
+            fprintf(fid,'%i,\n', hInt(Korder));
         end
+        fprintf(fid,'%i }; \n', hInt(Korder));
         fclose(fid);
 
 save('bpg.mat','hInt');

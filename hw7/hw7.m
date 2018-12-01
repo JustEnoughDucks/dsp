@@ -51,8 +51,8 @@ figure;
 plot(Q);
 
 Morder = length(h);
-hMax = max(h)
-scale = 2^(16-1)/hMax
+[hMax,hMaxIndex] = max(h)
+scale = (2^(16-1)-50)/h(hMaxIndex-1)
 % scale = 
 hInt = floor(h*(scale));
 

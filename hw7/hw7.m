@@ -69,9 +69,9 @@ deltas = max(abs(H(Omega<=Omegas)))
         fprintf(fid,'#define Korder %i \n',uint8(Morder));
         fprintf(fid,'int h[Korder] = { \n');
         for Korder = 1:Morder-1
-            fprintf(fid,'%i,\n', int32(h(Korder)));
+            fprintf(fid,'%i,\n', hInt(Korder));
         end
-        fprintf(fid,'%i }; \n', int32(h(Korder)));
+        fprintf(fid,'%i }; \n', hInt(Korder));
         fclose(fid);
 
 save('bpg.mat','hInt');

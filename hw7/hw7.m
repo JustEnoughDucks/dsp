@@ -27,7 +27,7 @@ plot(parablength, parabola)
 % Q = 1000.0*(Omegak<=Omegas)+1.0*(Omegak>=Omegap);
 % Q(fix(K/2)+2:end) = Q(round(K/2):-1:2);
 Q = 50.0*(Omegak<=Omegas)++ 1.0*(Omegak>=Omegap & Omegak < 1) + ...
-    .01*(Omegak>=1 & Omegak < 1.5) + 1.0*(Omegak>=1.5);
+    1.0*(Omegak>=1 & Omegak < 1.5) + 1.0*(Omegak>=1.5);
 Q(fix(K/2)+2:end) = Q(round(K/2):-1:2);
 
 

@@ -32,8 +32,8 @@ Q = 50.0*(Omegak<=Omegas) + 1.0*(Omegak>=Omegap & Omegak < OmegaPR) + ...
 Q(fix(K/2)+2:end) = Q(round(K/2):-1:2);
 
 % Hd = (1.*(Omegak < Omegap) + 0.*(Omegak > Omegap)).*exp(-1j*k*pi*(Lh-1)/K);
-Hd = (0.*(Omegak<Omegap) + 1.*(Omegak>=Omegap & Omegak<=OmegaPR) ...
-     + 1.*(Omegak >= OmegaPR)).*exp(-1j*k*pi*(Lh-1)/K);
+Hd = (0.*(Omegak<Omegap) + parabola.*(Omegak>=Omegap & Omegak<=OmegaPR) ...
+     + sinfn.*(Omegak >= OmegaPR)).*exp(-1j*k*pi*(Lh-1)/K);
 Hd(fix(K/2)+2:end) = conj(Hd(round(K/2):-1:2));
 l = (0:Lh-1)'; a = exp(1j*l*Omegak)*Q.'/K; b = exp(1j*l*Omegak)*(Hd.*Q/K).';
 a = real(a); b = real(b);

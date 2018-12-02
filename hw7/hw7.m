@@ -1,7 +1,7 @@
 %% DSP Homework 7
 T = 1/20000;
 Omegap = 2*pi*7000*T;    Omegas = 2*pi*8000*T; 
-Lh = 101; 
+Lh = 81; 
 K = 10*Lh; 
 k = (0:K-1);
 Omegak = k*2*pi/K;

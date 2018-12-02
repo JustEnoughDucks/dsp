@@ -1,6 +1,6 @@
 %% DSP Homework 7
 T = 1/20000;
-Omegap = 2*pi*160*T;    Omegas = 2*pi*20*T; 
+Omegap = 2*pi*500*T;    Omegas = 2*pi*100*T; 
 Lh = 201; 
 K = 10*Lh; 
 k = (0:K-1);
@@ -54,8 +54,8 @@ plot(Q);
 
 Morder = length(h);
 [hMax,hMaxIndex] = max(h)
-scale = (2^(16-1)-50)/h(hMaxIndex-1)
-% scale = (2^15)/(abs(sum(h)));                                      %Q notation
+scale = abs((2^(16-1)-50)/h(hMaxIndex-1))
+% scale = abs((2^15)/(abs(sum(h))));                                      %Q notation
 hInt = floor(h*(scale));
 
 subplot(211); 

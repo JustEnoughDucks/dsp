@@ -1,14 +1,15 @@
 %% DSP Homework 7
 T = 1/20000;
-Omegap = 2*pi*7000*T;    Omegas = 2*pi*9000*T; 
-deltap = 1;             deltas = .01;
-Lh = 101; 
+Omegap = 2*pi*160*T;    Omegas = 2*pi*20*T; 
+Lh = 201; 
 K = 10*Lh; 
 k = (0:K-1);
 Omegak = k*2*pi/K;
 
-OmegaPC = 2*pi*1500*T;   OmegaPR = 2*pi*3000*T;
-parablength = Omegak.*(Omegak>=0 & Omegak<=OmegaPR);
+% OmegaPC = 2*pi*1500*T;   OmegaPR = 2*pi*3000*T;
+% parablength = Omegak.*(Omegak>=0 & Omegak<=OmegaPR);
+OmegaPC = 2*pi*750*T;   OmegaPR = 2*pi*1500*T;
+parablength = Omegak.*(Omegak>=Omegap & Omegak<=OmegaPR);
 
 sawPer = 1000*2*pi/20000;
 xsawPer= Omegak.*(Omegak > OmegaPR);
@@ -24,17 +25,20 @@ xu=linspace(0,OmegaPR,10);
 parabola = [polyval(psauce,parablength)];
 plot(parablength, parabola)
 
-Q = 20.0*(Omegak>=Omegas) + 1.0*(Omegak>=0 & Omegak < 1) + ...
-    10.0*(Omegak>=1 & Omegak < 1.5) + 1*(Omegak>=1.5 & Omegak < Omegap);
+% Q = 20.0*(Omegak>=Omegas) + 1.0*(Omegak>=0 & Omegak < 1) + ...
+%     10.0*(Omegak>=1 & Omegak < 1.5) + 1*(Omegak>=1.5 & Omegak < Omegap);
+Q = 20.0*(Omegak<=Omegas) + 1.0*(Omegak>=Omegap & Omegak < OmegaPR) + ...
+    10.0*(Omegak>=OmegaPR & Omegak < 1.5) + 1*(Omegak>=1.5 & Omegak < pi);
 Q(fix(K/2)+2:end) = Q(round(K/2):-1:2);
 
-Hd = (1.*(Omegak < Omegap) + 0.*(Omegak > Omegap)).*exp(-1j*k*pi*(Lh-1)/K);
-% Hd = (0.*(Omegak<Omegap) + parabola.*(Omegak>=Omegap & Omegak<=OmegaPR) ...
-%      + sinfn.*(Omegak >= OmegaPR)).*exp(-1j*k*pi*(Lh-1)/K);
+% Hd = (1.*(Omegak < Omegap) + 0.*(Omegak > Omegap)).*exp(-1j*k*pi*(Lh-1)/K);
+Hd = (0.*(Omegak<Omegap) + parabola.*(Omegak>=Omegap & Omegak<=OmegaPR) ...
+     + sinfn.*(Omegak >= OmegaPR)).*exp(-1j*k*pi*(Lh-1)/K);
 Hd(fix(K/2)+2:end) = conj(Hd(round(K/2):-1:2));
 l = (0:Lh-1)'; a = exp(1j*l*Omegak)*Q.'/K; b = exp(1j*l*Omegak)*(Hd.*Q/K).';
 a = real(a); b = real(b);
 A = toeplitz(a); h = (A\b);
+h = 1/max(h)*h;
 n = (0:Lh-1)'; 
 subplot(211); 
 stem(n,h);
@@ -50,8 +54,8 @@ plot(Q);
 
 Morder = length(h);
 [hMax,hMaxIndex] = max(h)
-% scale = (2^(16-1)-50)/h(hMaxIndex-1)
-scale = (2^15)/(abs(sum(h)));                                      %Q notation
+scale = (2^(16-1)-50)/h(hMaxIndex-1)
+% scale = (2^15)/(abs(sum(h)));                                      %Q notation
 hInt = floor(h*(scale));
 
 subplot(211); 

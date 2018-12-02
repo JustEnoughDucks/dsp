@@ -14,10 +14,8 @@
 #include "math.h"																//Math Header
 #include "coef.h"
 
-//#define PI 3.14159
 #define SW2 !((GPIOC->PDIR >> 1) & 1)
-#define SW3 !((GPIOB->PDIR >> 17) &1)
-
+#define SW3 !((GPIOB->PDIR >> 17)& 1)
 #define MAXIMUM 1024
 
 uint16_t valADC;
@@ -26,9 +24,12 @@ uint8_t scroll = 0;
 uint16_t integrator1 = 0;
 uint16_t integrator2 = 0;  /* Will range from 0 to the specified MAXIMUM */
 uint16_t outputBut;      /* Cleaned-up version of the input signal */
+uint16_t buff = 0;
+uint16_t old = 0;
 
-int Y;
-int s[Korder] = {0};
+int Y;//,X;
+int X[Korder];
+//int s[Korder] = {0};
 
 void PIT0_IRQHandler(void){	//This function is called when the timer interrupt expires
 	//Place Interrupt Service Routine Here
@@ -37,23 +38,32 @@ void PIT0_IRQHandler(void){	//This function is called when the timer interrupt e
 	
 	valADC = ADC0->R[0];
 	ADC0->SC1[0]	=	ADC_SC1_ADCH(0x00);
+	
+	X[old] = valADC - 2048;
+	buff = old;
+	Y = 0;
 
 	switch(scroll)
 	{
 		case 0: {
-			Yn[Korder] = (uint16) valADC;
+			valDAC = valADC;
 			break;
 		}
 		case 1: {
 			for(int i = 0; i < Korder; i++)
 			{
-					Y = h[i]*ValADC + s[i];
-					s[i] = h[i]*ValADC ;
+					//Y = h[i]*X + s[i];
+					//s[i] = h[i]*X + s[i+1];
+					Y = h[i]*X[buff] + Y;
+					buff++;
+					if(buff >= Korder){buff = 0;}
 			}
+			valDAC = ((Y >> 16) & 0xFFFF) + 1862;
+			old++;
+			if(old >= Korder){old = 0;}
 			break;
-		};
+		}
 	}
-	valDAC = (uint16_t) (Yn);
 
 
 	
@@ -94,25 +104,6 @@ int main(void){
 		//Main loop goes here
 		//may need to implement a software debounce to realize reliable pushbutton operation 
 		
-		/*if (SW2&&p!=2)
-			{
-				scroll++;
-				p = 2;
-			}		
-			if (SW3&&p!=3)
-			{
-				scroll--;
-				p = 3;
-			}
-			if (!SW2&&!SW3)
-			{
-			 p = 0;
-			}
-			if (scroll>4)
-			{
-				scroll=0;
-			}	*/
-		
 		//Step 1: Update the integrator based on the input signal.  Note that the
 		//integrator follows the input, decreasing or increasing towards the limits as
 		//determined by the input state (0 or 1). 
@@ -145,7 +136,7 @@ int main(void){
 		//output will only change states if the integrator has reached a limit, either
 		//0 or MAXIMUM.
 	 
-		if (integrator1 >= MAXIMUM && scroll > 4)
+		if (integrator1 >= MAXIMUM && scroll > 1)
 		{
 			scroll = 0;
 		}
@@ -168,4 +159,5 @@ int main(void){
 		
 	}
 }
+
 

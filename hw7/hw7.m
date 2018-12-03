@@ -1,4 +1,4 @@
-%% DSP Homework 7
+%% DSP Homework 7 Matlab Code
 T = 1/20000;
 Omegap = 2*pi*7000*T;    Omegas = 2*pi*8000*T; 
 Lh = 141; 
@@ -25,15 +25,10 @@ xu=linspace(0,OmegaPR,10);
 parabola = [polyval(psauce,parablength)];
 plot(parablength, parabola)
 
-% Q = 20.0*(Omegak>=Omegas) + 1.0*(Omegak>=0 & Omegak < 1) + ...
-%     10.0*(Omegak>=1 & Omegak < 1.5) + 1*(Omegak>=1.5 & Omegak < Omegap);
 Q = 50.0*(Omegak<=Omegas) + 1.0*(Omegak>=Omegap & Omegak < OmegaPR) + ...
     1.0*(Omegak>=OmegaPR & Omegak < 1.5) + 1*(Omegak>=1.5 & Omegak < pi);
 Q(fix(K/2)+2:end) = Q(round(K/2):-1:2);
 
-% Hd = (1.*(Omegak < Omegap) + 0.*(Omegak > Omegap)).*exp(-1j*k*pi*(Lh-1)/K);
-% Hd = (0.*(Omegak<Omegap) + parabola.*(Omegak>=Omegap & Omegak<=OmegaPR) ...
-%      + sinfn.*(Omegak >= OmegaPR)).*exp(-1j*k*pi*(Lh-1)/K);
 Hd = (0.*(Omegak>Omegap) + parabola.*(Omegak>=0 & Omegak<=OmegaPR) ...
      + sinfn.*(Omegak >= OmegaPR & Omegak <= Omegap)).*exp(-1j*k*pi*(Lh-1)/K);
 Hd(fix(K/2)+2:end) = conj(Hd(round(K/2):-1:2));

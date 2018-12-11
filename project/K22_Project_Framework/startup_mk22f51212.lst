@@ -1345,7 +1345,7 @@ erwork --depend=.\startup_mk22f51212.d -o.\startup_mk22f51212.o -I.\RTE\Device\
 MK22FN512VLH12 -I.\RTE\_Target_1 -IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Co
 re\Include -IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\DSP\Include -IC:\Keil_v5
 \ARM\PACK\NXP\MK22F51212_DFP\10.0.3 --predefine="__EVAL SETA 1" --predefine="__
-UVISION_VERSION SETA 524" --predefine="_RTE_ SETA 1" --predefine="CPU_MK22FN512
+UVISION_VERSION SETA 525" --predefine="_RTE_ SETA 1" --predefine="CPU_MK22FN512
 VLH12 SETA 1" --list=.\startup_mk22f51212.lst RTE\Device\MK22FN512VLH12\startup
 _MK22F51212.s
 

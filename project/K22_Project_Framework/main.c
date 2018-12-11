@@ -21,12 +21,12 @@
 #define threshold .3
 
 uint16_t valADC;
-uint16_t valDAC;
 uint16_t buff = 0;
 uint16_t old = 0;
 uint16_t minTau = 0;
 uint16_t a,c;
-uint16_t tau;
+
+uint8_t full;
 
 int delta;
 int x[bufferSize] = {0};
@@ -38,81 +38,20 @@ void PIT0_IRQHandler(void){	//This function is called when the timer interrupt e
 	GPIOA->PCOR = GPIO_PCOR_PTCO(0x0006);		//Turn Red Off
 	GPIOD->PCOR = GPIO_PCOR_PTCO(0x0020);		//Turn off Blue LED
 	
-	valADC = ADC0->R[0];
-	ADC0->SC1[0]	=	ADC_SC1_ADCH(0x00);
-	
-	static float sum = 0;
-	tau = 0;
-	
-	// Step 2: Difference equation
-	for(tau = 0; tau < 450; tau++)
+	if(buff < halfBuffer)
 	{
-		/*for(uint16_t i = 0; i < halfBuffer; i++)
-		{
-			delta = x[i] - x[i + tau];
-			yinBuffer[tau] += delta * delta;
-		}*/
+		x[buff] = ADC0->R[0];
+		ADC0->SC1[0]	=	ADC_SC1_ADCH(0x00);
+		full = 0;
+	}else if(buff >= halfBuffer)
+	{
+		full = 1;
 	}
-	
-	
-	// Step 3: Normalized mean of difference equation
-	/*for(uint16_t tau = 0; tau < halfBuffer; tau++)
-	{
-		sum += yinBuffer[tau];
-		yinBuffer[tau] = yinBuffer[tau]*tau/sum;
-	}
-	
-	// Step 4: Find mimimum Tau of the absolute threshold subset
-	
-	for(uint16_t tau = 1; tau < halfBuffer; tau++)
-	{
-		if(yinBuffer[tau] < threshold)
-		{
-			if(tau + 1 < halfBuffer && yinBuffer[tau] < yinBuffer[tau - 1] && yinBuffer[tau + 1] > yinBuffer[tau] && yinBuffer[tau] < yinBuffer[minTau])
-			{
-				minTau = tau;
-				break;
-			}
-		}
-	}
-	
-	// Step 5: Interpolate 
-	if(minTau > 0)
-	{
-		if(minTau - 1 < 0)
-		{
-			a = minTau;
-		}else
-		{
-			a = minTau - 1;
-		}
-		if(minTau + 1 > bufferSize)
-		{
-			c = minTau;
-		}else
-		{
-			c = minTau + 1;
-		}
-		fa = yinBuffer[a];
-    fb = yinBuffer[minTau];
-    fc = yinBuffer[c];
-		
-		accuTau = minTau + (fa - fc) / (2 * (fa - 2*fb + fc));
-    f0 = (float)16000/accuTau;
-		
-	}else {f0 = -1;}
-	
-	
-	//x[old] = valADC - 2048;
-	//buff = old;*/
-
-
-	
-	DAC0->DAT->DATH = DAC_DATH_DATA1((valDAC >> 8))	;		//Set DAC Output
-	DAC0->DAT->DATL = DAC_DATL_DATA0((valDAC));		//Set DAC Output
+	buff++;
 	
 	NVIC_ClearPendingIRQ(PIT0_IRQn);							//Clears interrupt flag in NVIC Register
 	PIT->CHANNEL[0].TFLG	= PIT_TFLG_TIF_MASK;		//Clears interrupt flag in PIT Register
+	if(full >= 1) {PIT->CHANNEL[0].TCTRL &= !PIT_TCTRL_TEN_MASK;}		//Timer Enable.  Set to 1 to enable timer.}
 
 	GPIOA->PSOR = GPIO_PSOR_PTSO(0x0006);		//Turn on Red LED
 	GPIOD->PSOR = GPIO_PSOR_PTSO(0x0020);		//Turn Blue On
@@ -139,11 +78,84 @@ int main(void){
 	GPIOA->PDDR=0x0006;//set LED at ports A1 and A2 to output(Red & Green LEDs)
 	GPIOD->PDDR=0x0020;//set led at port D5 to output(Blue LED)
 
-	//int myVariableThatIsNeverUsed = 0;
-	int p = 0;
-	while(1){
-		//Main loop goes here
+	while(1)
+	{
+		//int myVariableThatIsNeverUsed = 0;
+		while(full){
+			//Main loop goes here
+			static float sum = 0;
 		
+			// Step 2: Difference equation
+			for(uint16_t tau = 0; tau < 450; tau++)
+			{
+				for(uint16_t i = 0; i < halfBuffer; i++)
+				{
+					delta = x[i] - x[i + tau];
+					yinBuffer[tau] += delta * delta;
+				}
+			}
+			
+			
+			// Step 3: Normalized mean of difference equation
+			for(uint16_t tau = 0; tau < halfBuffer; tau++)
+			{
+				sum += yinBuffer[tau];
+				yinBuffer[tau] *= tau/sum;
+			}
+			
+			// Step 4: Find mimimum Tau of the absolute threshold subset
+			
+			for(uint16_t tau = 1; tau < halfBuffer; tau++)
+			{
+				if(yinBuffer[tau] < (float)threshold)
+				{
+					if(tau + 1 < halfBuffer && yinBuffer[tau] < yinBuffer[tau - 1] && yinBuffer[tau + 1] > yinBuffer[tau] && yinBuffer[tau] < yinBuffer[minTau])
+					{
+						minTau = tau;
+						break;
+					}
+				}
+			}
+			
+			// Step 5: Interpolate 
+			if(minTau > 0)
+			{
+				if(minTau - 1 < 0)
+				{
+					a = minTau;
+				}else
+				{
+					a = minTau - 1;
+				}
+				if(minTau + 1 > bufferSize)
+				{
+					c = minTau;
+				}else
+				{
+					c = minTau + 1;
+				}
+				fa = yinBuffer[a];
+				fb = yinBuffer[minTau];
+				fc = yinBuffer[c];
+				
+				// Legrange interpolation function
+				accuTau = minTau + (fa - fc) / (2 * (fa - 2*fb + fc));
+				f0 = (float)16000/accuTau;
+				
+				//Reset interrupt to collect new data
+				PIT->CHANNEL[0].TCTRL |= PIT_TCTRL_TEN_MASK		;		//Timer Enable.  Set to 1 to enable timer.
+				full = 0;
+				buff = 0;
+				
+			}else
+			{
+				f0 = -1;
+				//Reset interrupt to collect new data
+				PIT->CHANNEL[0].TCTRL |= PIT_TCTRL_TEN_MASK		;		//Timer Enable.  Set to 1 to enable timer.
+				full = 0;
+				buff = 0;
+			}
+		}
 	}
 }
 

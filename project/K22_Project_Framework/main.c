@@ -12,8 +12,7 @@
 #include "ADC.h"																//ADC Header
 #include "DAC.h"																//DAC Header
 #include "math.h"																//Math Header
-#include "coef.h"
-#include "string.h"
+#include "string.h"															//String header for memset
 
 #define SW2 !((GPIOC->PDIR >> 1) & 1)
 #define SW3 !((GPIOB->PDIR >> 17)& 1)

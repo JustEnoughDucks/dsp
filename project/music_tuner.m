@@ -15,7 +15,7 @@ yinBuffer(bufferSize) = 0;
 count = 1;
 
 for Freq = Ftest
-    z = exp(-t).*sin(Freq*2*pi*t);
+    z = 1023*exp(-t).*sin(Freq*2*pi*t) + 1023;
     halfBuffer = .5*bufferSize;
     buffer = z(1:bufferSize);
     sum = 0;
@@ -74,8 +74,6 @@ for Freq = Ftest
         else
             c = minTau + 1;
         end
-
-        steps_taken = 0;
         b = minTau;
         fa = yinBuffer(a);
         fb = yinBuffer(minTau);

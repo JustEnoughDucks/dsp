@@ -16,20 +16,22 @@
 
 #define SW2 !((GPIOC->PDIR >> 1) & 1)
 #define SW3 !((GPIOB->PDIR >> 17)& 1)
-#define MAXIMUM 1024
+#define bufferSize 2048
+#define halfBuffer 1024
+#define threshold .3
 
 uint16_t valADC;
 uint16_t valDAC;
-uint8_t scroll = 0;
-uint16_t integrator1 = 0;
-uint16_t integrator2 = 0;  /* Will range from 0 to the specified MAXIMUM */
-uint16_t outputBut;      /* Cleaned-up version of the input signal */
 uint16_t buff = 0;
 uint16_t old = 0;
+uint16_t minTau = 0;
+uint16_t a,c;
+uint16_t tau;
 
-int Y;//,X;
-int X[Korder];
-//int s[Korder] = {0};
+int delta;
+int x[bufferSize] = {0};
+float yinBuffer[bufferSize] = {0};
+float f0 = 0, fa, fb, fc, accuTau;
 
 void PIT0_IRQHandler(void){	//This function is called when the timer interrupt expires
 	//Place Interrupt Service Routine Here
@@ -39,36 +41,75 @@ void PIT0_IRQHandler(void){	//This function is called when the timer interrupt e
 	valADC = ADC0->R[0];
 	ADC0->SC1[0]	=	ADC_SC1_ADCH(0x00);
 	
-	X[old] = valADC - 2048;
-	buff = old;
-	Y = 0;
-
-	switch(scroll)
+	static float sum = 0;
+	tau = 0;
+	
+	// Step 2: Difference equation
+	for(tau = 0; tau < 450; tau++)
 	{
-		case 0: {
-			valDAC = valADC;
-			break;
-		}
-		case 1: {
-			for(int i = 0; i < Korder; i++)
+		/*for(uint16_t i = 0; i < halfBuffer; i++)
+		{
+			delta = x[i] - x[i + tau];
+			yinBuffer[tau] += delta * delta;
+		}*/
+	}
+	
+	
+	// Step 3: Normalized mean of difference equation
+	/*for(uint16_t tau = 0; tau < halfBuffer; tau++)
+	{
+		sum += yinBuffer[tau];
+		yinBuffer[tau] = yinBuffer[tau]*tau/sum;
+	}
+	
+	// Step 4: Find mimimum Tau of the absolute threshold subset
+	
+	for(uint16_t tau = 1; tau < halfBuffer; tau++)
+	{
+		if(yinBuffer[tau] < threshold)
+		{
+			if(tau + 1 < halfBuffer && yinBuffer[tau] < yinBuffer[tau - 1] && yinBuffer[tau + 1] > yinBuffer[tau] && yinBuffer[tau] < yinBuffer[minTau])
 			{
-					//Y = h[i]*X + s[i];
-					//s[i] = h[i]*X + s[i+1];
-					Y = h[i]*X[buff] + Y;
-					buff++;
-					if(buff >= Korder){buff = 0;}
+				minTau = tau;
+				break;
 			}
-			valDAC = ((Y >> 16) & 0xFFFF) + 1862;
-			old++;
-			if(old >= Korder){old = 0;}
-			break;
 		}
 	}
+	
+	// Step 5: Interpolate 
+	if(minTau > 0)
+	{
+		if(minTau - 1 < 0)
+		{
+			a = minTau;
+		}else
+		{
+			a = minTau - 1;
+		}
+		if(minTau + 1 > bufferSize)
+		{
+			c = minTau;
+		}else
+		{
+			c = minTau + 1;
+		}
+		fa = yinBuffer[a];
+    fb = yinBuffer[minTau];
+    fc = yinBuffer[c];
+		
+		accuTau = minTau + (fa - fc) / (2 * (fa - 2*fb + fc));
+    f0 = (float)16000/accuTau;
+		
+	}else {f0 = -1;}
+	
+	
+	//x[old] = valADC - 2048;
+	//buff = old;*/
 
 
 	
-	DAC0->DAT->DATH = DAC_DATH_DATA1((valDAC >> 8)	&0x0F)	;		//Set DAC Output
-	DAC0->DAT->DATL = DAC_DATL_DATA0((valDAC))	;		//Set DAC Output
+	DAC0->DAT->DATH = DAC_DATH_DATA1((valDAC >> 8))	;		//Set DAC Output
+	DAC0->DAT->DATL = DAC_DATL_DATA0((valDAC));		//Set DAC Output
 	
 	NVIC_ClearPendingIRQ(PIT0_IRQn);							//Clears interrupt flag in NVIC Register
 	PIT->CHANNEL[0].TFLG	= PIT_TFLG_TIF_MASK;		//Clears interrupt flag in PIT Register
@@ -102,60 +143,6 @@ int main(void){
 	int p = 0;
 	while(1){
 		//Main loop goes here
-		//may need to implement a software debounce to realize reliable pushbutton operation 
-		
-		//Step 1: Update the integrator based on the input signal.  Note that the
-		//integrator follows the input, decreasing or increasing towards the limits as
-		//determined by the input state (0 or 1). 
-	 
-		if (!SW2)
-		{
-			if (integrator1 > 0)
-			{
-				integrator1--;
-			}
-		}
-		else if (SW2 && integrator1 < MAXIMUM)
-		{
-			integrator1++;
-		}
-		
-		if (!SW3)
-		{
-			if (integrator2 > 0)
-			{
-				integrator2--;
-			}
-		}
-		else if (SW3 && integrator2 < MAXIMUM)
-		{
-			integrator2++;
-		}
-	 
-		//Step 2: Update the output state based on the integrator.  Note that the
-		//output will only change states if the integrator has reached a limit, either
-		//0 or MAXIMUM.
-	 
-		if (integrator1 >= MAXIMUM && scroll > 1)
-		{
-			scroll = 0;
-		}
-		else if (integrator1 >= MAXIMUM && p != 2)
-		{
-			scroll++;
-			integrator1 = MAXIMUM - 25;  //defensive code if integrator got corrupted
-			p = 2;
-		}
-		if (integrator2 >= MAXIMUM && scroll > 0 && p != 3)
-		{
-			scroll--;
-			integrator2 = MAXIMUM - 25;  //defensive code if integrator got corrupted
-			p = 3;
-		}
-		if( integrator1 == 0 && integrator2 == 0)
-		{
-			p = 0;
-		}
 		
 	}
 }

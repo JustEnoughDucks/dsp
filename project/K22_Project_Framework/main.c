@@ -13,6 +13,7 @@
 #include "DAC.h"																//DAC Header
 #include "math.h"																//Math Header
 #include "coef.h"
+#include "string.h"
 
 #define SW2 !((GPIOC->PDIR >> 1) & 1)
 #define SW3 !((GPIOB->PDIR >> 17)& 1)
@@ -34,6 +35,7 @@ int delta;
 int x[bufferSize] = {0};
 float yinBuffer[bufferSize] = {0};
 float f0 = 0, fa, fb, fc, accuTau;
+int16_t cents;
 
 void PIT0_IRQHandler(void){	//This function is called when the timer interrupt expires
 	//Place Interrupt Service Routine Here
@@ -89,9 +91,10 @@ int main(void){
 		while(full){
 			//Main loop goes here
 			sum = 0;
+			memset(yinBuffer,0,bufferSize);
 		
 			// Step 2: Difference equation
-			for(uint16_t tau = 0; tau < 450; tau++)
+			for(uint16_t tau = 0; tau < halfBuffer; tau++)
 			{
 				for(uint16_t i = 0; i < halfBuffer; i++)
 				{
@@ -102,7 +105,8 @@ int main(void){
 			
 			
 			// Step 3: Normalized mean of difference equation
-			for(uint16_t o = 0; o < halfBuffer; o++)
+			yinBuffer[0] = 1;
+			for(uint16_t o = 1; o < halfBuffer; o++)
 			{
 				sum += yinBuffer[o];
 				yinBuffer[o] = yinBuffer[o] * (((float)(o))/sum);
@@ -112,14 +116,14 @@ int main(void){
 			
 			for(uint16_t tau = 1; tau < halfBuffer; tau++)
 			{
-				/*if(yinBuffer[tau] < (float)threshold)
+				if(yinBuffer[tau] < (float)threshold)
 				{
 					if(tau + 1 < halfBuffer && yinBuffer[tau] < yinBuffer[tau - 1] && yinBuffer[tau + 1] > yinBuffer[tau] && yinBuffer[tau] < yinBuffer[minTau])
 					{
 						minTau = tau;
 						break;
 					}
-				}*/
+				}
 			}
 			
 			// Step 5: Interpolate 
@@ -146,6 +150,10 @@ int main(void){
 				// Legrange interpolation function
 				accuTau = minTau + (fa - fc) / (2 * (fa - 2*fb + fc));
 				f0 = (float)16000/accuTau;
+				
+				// Step 6: Calculate tuning
+				
+				cents = (int16_t)(1200*log2(f0/440.0f));
 				
 				//Reset interrupt to collect new data
 				

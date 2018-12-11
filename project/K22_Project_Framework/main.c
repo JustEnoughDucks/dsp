@@ -28,6 +28,8 @@ uint16_t a,c;
 
 uint8_t full;
 
+
+float sum;
 int delta;
 int x[bufferSize] = {0};
 float yinBuffer[bufferSize] = {0};
@@ -51,7 +53,10 @@ void PIT0_IRQHandler(void){	//This function is called when the timer interrupt e
 	
 	NVIC_ClearPendingIRQ(PIT0_IRQn);							//Clears interrupt flag in NVIC Register
 	PIT->CHANNEL[0].TFLG	= PIT_TFLG_TIF_MASK;		//Clears interrupt flag in PIT Register
-	if(full >= 1) {PIT->CHANNEL[0].TCTRL &= !PIT_TCTRL_TEN_MASK;}		//Timer Enable.  Set to 1 to enable timer.}
+	if(full >= 1) {
+		//NVIC_DisableIRQ(PIT0_IRQn)											;		//CMSIS Function to enable interrupt via PIT
+		PIT->CHANNEL[0].TCTRL &= !PIT_TCTRL_TEN_MASK;		//Timer Enable.  Set to 1 to enable timer.}
+	}
 
 	GPIOA->PSOR = GPIO_PSOR_PTSO(0x0006);		//Turn on Red LED
 	GPIOD->PSOR = GPIO_PSOR_PTSO(0x0020);		//Turn Blue On
@@ -83,7 +88,7 @@ int main(void){
 		//int myVariableThatIsNeverUsed = 0;
 		while(full){
 			//Main loop goes here
-			static float sum = 0;
+			sum = 0;
 		
 			// Step 2: Difference equation
 			for(uint16_t tau = 0; tau < 450; tau++)
@@ -91,30 +96,30 @@ int main(void){
 				for(uint16_t i = 0; i < halfBuffer; i++)
 				{
 					delta = x[i] - x[i + tau];
-					yinBuffer[tau] += delta * delta;
+					yinBuffer[tau] += (float)delta * (float)delta;
 				}
 			}
 			
 			
 			// Step 3: Normalized mean of difference equation
-			for(uint16_t tau = 0; tau < halfBuffer; tau++)
+			for(uint16_t o = 0; o < halfBuffer; o++)
 			{
-				sum += yinBuffer[tau];
-				yinBuffer[tau] *= tau/sum;
+				sum += yinBuffer[o];
+				yinBuffer[o] = yinBuffer[o] * (((float)(o))/sum);
 			}
 			
 			// Step 4: Find mimimum Tau of the absolute threshold subset
 			
 			for(uint16_t tau = 1; tau < halfBuffer; tau++)
 			{
-				if(yinBuffer[tau] < (float)threshold)
+				/*if(yinBuffer[tau] < (float)threshold)
 				{
 					if(tau + 1 < halfBuffer && yinBuffer[tau] < yinBuffer[tau - 1] && yinBuffer[tau + 1] > yinBuffer[tau] && yinBuffer[tau] < yinBuffer[minTau])
 					{
 						minTau = tau;
 						break;
 					}
-				}
+				}*/
 			}
 			
 			// Step 5: Interpolate 
@@ -143,7 +148,18 @@ int main(void){
 				f0 = (float)16000/accuTau;
 				
 				//Reset interrupt to collect new data
+				
+				PIT->CHANNEL[0].TCTRL	=	
+												PIT_TCTRL_TIE_MASK		|		//Timer Interupt Enable.  Request interrupt whenever TFLG0[TIF] is set.
+												0x00u;
+				
+				PIT->CHANNEL[0].TFLG	= PIT_TFLG_TIF_MASK			|		//Sets to 1 at end of timer period.  Writing 1 clears this bit.  If TCTRL[TIE] is set it also triggers an interrupt.
+												0x00u;
+				
+				//NVIC_EnableIRQ(PIT0_IRQn)											;		//CMSIS Function to enable interrupt via PIT
 				PIT->CHANNEL[0].TCTRL |= PIT_TCTRL_TEN_MASK		;		//Timer Enable.  Set to 1 to enable timer.
+				PIT->CHANNEL[0].TCTRL |= PIT_TCTRL_TEN_MASK		;		//Timer Enable.  Set to 1 to enable timer.
+				//NVIC_EnableIRQ(PIT0_IRQn)											;		//CMSIS Function to enable interrupt via PIT
 				full = 0;
 				buff = 0;
 				
@@ -151,6 +167,14 @@ int main(void){
 			{
 				f0 = -1;
 				//Reset interrupt to collect new data
+				PIT->CHANNEL[0].TCTRL	=	
+													PIT_TCTRL_TIE_MASK		|		//Timer Interupt Enable.  Request interrupt whenever TFLG0[TIF] is set.
+													0x00u;
+				
+				PIT->CHANNEL[0].TFLG	= PIT_TFLG_TIF_MASK			|		//Sets to 1 at end of timer period.  Writing 1 clears this bit.  If TCTRL[TIE] is set it also triggers an interrupt.
+													0x00u;
+				
+				//NVIC_EnableIRQ(PIT0_IRQn)											;		//CMSIS Function to enable interrupt via PIT
 				PIT->CHANNEL[0].TCTRL |= PIT_TCTRL_TEN_MASK		;		//Timer Enable.  Set to 1 to enable timer.
 				full = 0;
 				buff = 0;

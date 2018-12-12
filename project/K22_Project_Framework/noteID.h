@@ -1,5 +1,5 @@
 #define noteNumber 88 
-int centCorr[notenumber] = { 
+int centCorr[noteNumber] = { 
 1, 
 0, 
 0, 
@@ -90,7 +90,7 @@ int centCorr[notenumber] = {
 6 
  }; 
 
-float freqInfo[notenumber] = { 
+float freqInfo[noteNumber] = { 
 27.500000, 
 29.135240, 
 30.870000, 
@@ -181,7 +181,7 @@ float freqInfo[notenumber] = {
 4186.009600 
  }; 
 
-const char *centKey[notenumber] = { 
+const char *centKey[noteNumber] = { 
 "A0",
 "Bb0",
 "B0",

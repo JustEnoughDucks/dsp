@@ -111,19 +111,19 @@ noteNames = ["A0"; "Bb0"; "B0"; "C1"; "C#1"; "D1"; "Eb1"; "E1"; "F1"; "F#1";
 
 fid = fopen('K22_Project_Framework/noteID.h','w');
 fprintf(fid,'#define noteNumber %i \n',uint8(88));
-fprintf(fid,'int centCorr[notenumber] = { \n');
+fprintf(fid,'int centCorr[noteNumber] = { \n');
 for note = 1:87
     fprintf(fid,'%i, \n', -round(cents(note)));
 end
 fprintf(fid,'%i \n }; \n\n', -round(cents(note+1)));
 
-fprintf(fid,'float freqInfo[notenumber] = { \n');
+fprintf(fid,'float freqInfo[noteNumber] = { \n');
 for note = 1:87
     fprintf(fid,'%f, \n', Ftest(note));
 end
 fprintf(fid,'%f \n }; \n\n', Ftest(note+1));
         
-fprintf(fid,'const char *centKey[notenumber] = { \n');
+fprintf(fid,'const char *centKey[noteNumber] = { \n');
 for note = 1:87
     fprintf(fid,'"%s",\n', noteNames(note));
 end

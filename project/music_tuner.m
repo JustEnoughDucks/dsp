@@ -5,9 +5,9 @@ clear
 % [y, Fs] = audioread('A4_piano_11025.wav');
 Fs = 16000;
 t = 0:1/Fs:.4;
-Fbase = [27.50 30.87 32.70320 36.70810 41.20344 43.65353 48.99943];
+Fbase = [27.50 29.13524 30.87 32.70320 34.64783 36.70810 41.20344 38.89087 43.65353 46.24930 48.99943 51.91309];
 Ftest = [Fbase 2*Fbase 4*Fbase 8*Fbase 16*Fbase 32*Fbase 64*Fbase 128*Fbase(1) ...
-    128*Fbase(2) 128*Fbase(3)];
+    128*Fbase(2) 128*Fbase(3) 128*Fbase(4)];
 cents(length(Ftest)) = 0;
 f0(length(Ftest)) = 0;
 bufferSize = 2048;
@@ -98,3 +98,35 @@ for Freq = Ftest
     count = count + 1;
 
 end
+
+noteNames = ["A0"; "Bb0"; "B0"; "C1"; "C#1"; "D1"; "Eb1"; "E1"; "F1"; "F#1"; 
+             "G1"; "Ab1"; "A1"; "Bb1"; "B1"; "C2"; "C#2"; "D2"; "Eb2"; "E2"; "F2"; "F#2"; 
+             "G2"; "Ab2"; "A2"; "Bb2"; "B2"; "C3"; "C#3"; "D3"; "Eb3"; "E3"; "F3"; "F#3"; 
+             "G3"; "Ab3"; "A3"; "Bb3"; "B3"; "C4"; "C#4"; "D4"; "Eb4"; "E4"; "F4"; "F#4"; 
+             "G4"; "Ab4"; "A4"; "Bb4"; "B4"; "C5"; "C#5"; "D5"; "Eb5"; "E5"; "F5"; "F#5"; 
+             "G5"; "Ab5"; "A5"; "Bb5"; "B5"; "C6"; "C#6"; "D6"; "Eb6"; "E6"; "F6"; "F#6"; 
+             "G6"; "Ab6"; "A6"; "Bb6"; "B6"; "C7"; "C#7"; "D7"; "Eb7"; "E7"; "F7"; "F#7"; 
+             "G7"; "Ab7"; "A7"; "Bb7"; "B7"; "C8"];
+
+
+fid = fopen('K22_Project_Framework/noteID.h','w');
+fprintf(fid,'#define noteNumber %i \n',uint8(88));
+fprintf(fid,'int centCorr[notenumber] = { \n');
+for note = 1:87
+    fprintf(fid,'%i, \n', -round(cents(note)));
+end
+fprintf(fid,'%i \n }; \n\n', -round(cents(note+1)));
+
+fprintf(fid,'float freqInfo[notenumber] = { \n');
+for note = 1:87
+    fprintf(fid,'%f, \n', Ftest(note));
+end
+fprintf(fid,'%f \n }; \n\n', Ftest(note+1));
+        
+fprintf(fid,'const char *centKey[notenumber] = { \n');
+for note = 1:87
+    fprintf(fid,'"%s",\n', noteNames(note));
+end
+fprintf(fid,'"%s" }; \n', noteNames(note+1));
+        
+fclose(fid);

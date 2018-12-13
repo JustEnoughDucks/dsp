@@ -11,5 +11,7 @@
 .\main.o: ADC.h
 .\main.o: DAC.h
 .\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
-.\main.o: coef.h
 .\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\main.o: noteID.h
+.\main.o: freqAnalyze.h
+.\main.o: LCD.h

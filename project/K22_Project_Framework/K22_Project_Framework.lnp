@@ -4,6 +4,8 @@
 ".\main.o"
 ".\mcg.o"
 ".\timerint.o"
+".\freqanalyze.o"
+".\lcd.o"
 "C:\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Lib\ARM\arm_cortexM4lf_math.lib"
 ".\startup_mk22f51212.o"
 ".\system_mk22f51212.o"

@@ -13,6 +13,9 @@
 #include "DAC.h"																//DAC Header
 #include "math.h"																//Math Header
 #include "string.h"															//String header for memset
+#include "noteID.h"															//Note "hashtables"
+#include "freqAnalyze.h"												//Frequency comparison function
+#include "LCD.h"
 
 #define SW2 !((GPIOC->PDIR >> 1) & 1)
 #define SW3 !((GPIOB->PDIR >> 17)& 1)
@@ -25,22 +28,24 @@ uint16_t buff = 0;
 uint16_t old = 0;
 uint16_t minTau = 0;
 uint16_t a,c;
-
 uint8_t full;
-
+int16_t cents;
+uint8_t fBaseIndex;
 
 float sum;
 int delta;
 int x[bufferSize] = {0};
 float yinBuffer[bufferSize] = {0};
 float f0 = 0, fa, fb, fc, accuTau;
-int16_t cents;
+float compare;
+
+const unsigned char MSG[20] = "   A#4 - 10c flat   ";
+
 
 void PIT0_IRQHandler(void){	//This function is called when the timer interrupt expires
 	//Place Interrupt Service Routine Here
-	GPIOA->PCOR = GPIO_PCOR_PTCO(0x0006);		//Turn Red Off
-	GPIOD->PCOR = GPIO_PCOR_PTCO(0x0020);		//Turn off Blue LED
-	
+	GPIOA->PCOR = GPIO_PCOR_PTCO(0x0006);		//Turn Red On 
+	GPIOD->PCOR = GPIO_PCOR_PTCO(0x0020);		//Turn on Blue LED
 	if(buff < halfBuffer)
 	{
 		x[buff] = ADC0->R[0];
@@ -55,12 +60,25 @@ void PIT0_IRQHandler(void){	//This function is called when the timer interrupt e
 	NVIC_ClearPendingIRQ(PIT0_IRQn);							//Clears interrupt flag in NVIC Register
 	PIT->CHANNEL[0].TFLG	= PIT_TFLG_TIF_MASK;		//Clears interrupt flag in PIT Register
 	if(full >= 1) {
-		//NVIC_DisableIRQ(PIT0_IRQn)											;		//CMSIS Function to enable interrupt via PIT
-		PIT->CHANNEL[0].TCTRL &= !PIT_TCTRL_TEN_MASK;		//Timer Enable.  Set to 1 to enable timer.}
+		PIT->CHANNEL[0].TCTRL &= !PIT_TCTRL_TEN_MASK;		//Timer Disable.  Set to 1 to enable timer.}
 	}
+	GPIOA->PSOR = GPIO_PSOR_PTSO(0x0006);		//Turn off Red LED
+	GPIOD->PSOR = GPIO_PSOR_PTSO(0x0020);		//Turn Blue Off
+}
 
-	GPIOA->PSOR = GPIO_PSOR_PTSO(0x0006);		//Turn on Red LED
-	GPIOD->PSOR = GPIO_PSOR_PTSO(0x0020);		//Turn Blue On
+
+void LCD_Out(unsigned int DATA, unsigned char N)
+{
+   unsigned char A[5], i;
+   
+   for (i=0; i<5; i++) {
+      A[i] = DATA % 10;
+      DATA = DATA / 10;
+   }
+   for (i=5; i>0; i--) {
+      if (i == N) LCD_Write('.');
+      LCD_Write(A[i-1] + '0');
+   }
 }
 
 int main(void){
@@ -77,20 +95,29 @@ int main(void){
 	PORTA->PCR[1] = PORT_PCR_MUX(001);//set PTA1 to ALT1 (Red LED)
 	PORTA->PCR[2] = PORT_PCR_MUX(001);//set PTA2 to ALT1 (Green LED)
 	PORTD->PCR[5] = PORT_PCR_MUX(001);//set PTD5 to ALT1 (Blue LED)
+	PORTC->PCR[0]= PORT_PCR_MUX(001);//set PTC1 to ALT1 (SW2)
 	PORTC->PCR[1]= PORT_PCR_MUX(001);//set PTC1 to ALT1 (SW2)
-	PORTB->PCR[17] = PORT_PCR_MUX(001);//set PTB17 to ALT1 (SW3)
-	GPIOB->PDDR=0x0000;//set "port data direction register" to input (SW3)
-	GPIOC->PDDR=0x0000;//set "port data direction register" to input (SW2)
+	PORTC->PCR[5]= PORT_PCR_MUX(001);//set PTC1 to ALT1 (SW2)
+	PORTC->PCR[6]= PORT_PCR_MUX(001);//set PTC1 to ALT1 (SW2)
+	PORTC->PCR[7]= PORT_PCR_MUX(001);//set PTC1 to ALT1 (SW2)
+	PORTC->PCR[8]= PORT_PCR_MUX(001);//set PTC1 to ALT1 (SW2)
+	
+	GPIOC->PDDR=0x7FFF;//set "port data direction register" to output for LCD
 	GPIOA->PDDR=0x0006;//set LED at ports A1 and A2 to output(Red & Green LEDs)
 	GPIOD->PDDR=0x0020;//set led at port D5 to output(Blue LED)
+	
+	uint8_t fBaseIndex;
+	LCD_Init();                  // initialize the LCD
+	
 
 	while(1)
 	{
-		//int myVariableThatIsNeverUsed = 0;
 		while(full){
 			//Main loop goes here
 			sum = 0;
 			memset(yinBuffer,0,bufferSize);
+			compare = 0;
+			
 		
 			// Step 2: Difference equation
 			for(uint16_t tau = 0; tau < halfBuffer; tau++)
@@ -148,45 +175,36 @@ int main(void){
 				
 				// Legrange interpolation function
 				accuTau = minTau + (fa - fc) / (2 * (fa - 2*fb + fc));
+				
+				//Find F0
 				f0 = (float)16000/accuTau;
+				fBaseIndex = getTunedFrequency(f0);
 				
-				// Step 6: Calculate tuning
+				// Step 6: Calculate tuning (Includes correction for simulated error)
+				cents = (int16_t)((1200*log2(f0/freqInfo[fBaseIndex]) + centCorr[fBaseIndex]));
 				
-				cents = (int16_t)(1200*log2(f0/440.0f));
-				
-				//Reset interrupt to collect new data
-				
-				PIT->CHANNEL[0].TCTRL	=	
-												PIT_TCTRL_TIE_MASK		|		//Timer Interupt Enable.  Request interrupt whenever TFLG0[TIF] is set.
-												0x00u;
-				
-				PIT->CHANNEL[0].TFLG	= PIT_TFLG_TIF_MASK			|		//Sets to 1 at end of timer period.  Writing 1 clears this bit.  If TCTRL[TIE] is set it also triggers an interrupt.
-												0x00u;
-				
-				//NVIC_EnableIRQ(PIT0_IRQn)											;		//CMSIS Function to enable interrupt via PIT
-				PIT->CHANNEL[0].TCTRL |= PIT_TCTRL_TEN_MASK		;		//Timer Enable.  Set to 1 to enable timer.
-				PIT->CHANNEL[0].TCTRL |= PIT_TCTRL_TEN_MASK		;		//Timer Enable.  Set to 1 to enable timer.
-				//NVIC_EnableIRQ(PIT0_IRQn)											;		//CMSIS Function to enable interrupt via PIT
 				full = 0;
 				buff = 0;
-				
+				memset(x, 0, bufferSize);
+				//Reset interrupt to collect new data
+				PIT->CHANNEL[0].TCTRL	=	PIT_TCTRL_TIE_MASK | 0x00u;		//Timer Interupt Enable.  Request interrupt whenever TFLG0[TIF] is set.
+				PIT->CHANNEL[0].TFLG	= PIT_TFLG_TIF_MASK| 0x00u; 		//Sets to 1 at end of timer period.  Writing 1 clears this bit.  If TCTRL[TIE] is set it also triggers an interrupt.
+				//NVIC_EnableIRQ(PIT0_IRQn)											;		//CMSIS Function to enable interrupt via PIT
+				PIT->CHANNEL[0].TCTRL |= PIT_TCTRL_TEN_MASK		;		//Timer Enable.  Set to 1 to enable timer.
+
 			}else
 			{
 				f0 = -1;
-				//Reset interrupt to collect new data
-				PIT->CHANNEL[0].TCTRL	=	
-													PIT_TCTRL_TIE_MASK		|		//Timer Interupt Enable.  Request interrupt whenever TFLG0[TIF] is set.
-													0x00u;
-				
-				PIT->CHANNEL[0].TFLG	= PIT_TFLG_TIF_MASK			|		//Sets to 1 at end of timer period.  Writing 1 clears this bit.  If TCTRL[TIE] is set it also triggers an interrupt.
-													0x00u;
-				
-				//NVIC_EnableIRQ(PIT0_IRQn)											;		//CMSIS Function to enable interrupt via PIT
-				PIT->CHANNEL[0].TCTRL |= PIT_TCTRL_TEN_MASK		;		//Timer Enable.  Set to 1 to enable timer.
+				memset(x, 0, bufferSize);
 				full = 0;
 				buff = 0;
+				//Reset interrupt to collect new data
+				PIT->CHANNEL[0].TCTRL	=	PIT_TCTRL_TIE_MASK|	0x00u;	//Timer Interupt Enable.  Request interrupt whenever TFLG0[TIF] is set.
+				PIT->CHANNEL[0].TFLG	= PIT_TFLG_TIF_MASK	| 0x00u;		//Sets to 1 at end of timer period.  Writing 1 clears this bit.  If TCTRL[TIE] is set it also triggers an interrupt.
+				PIT->CHANNEL[0].TCTRL |= PIT_TCTRL_TEN_MASK		;		//Timer Enable.  Set to 1 to enable timer.
 			}
 		}
+		
 	}
 }
 
